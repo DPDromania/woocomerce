@@ -1,0 +1,977 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-13 09:54+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/ajax.php:125
+msgid "Authenticate successfully."
+msgstr ""
+
+#: includes/ajax.php:128 includes/ajax.php:196
+msgid "Username or password is incorrect."
+msgstr ""
+
+#: includes/ajax.php:194
+msgid "Updated successfully."
+msgstr ""
+
+#: includes/ajax.php:438
+msgid "Settings saved successfully."
+msgstr ""
+
+#: includes/ajax.php:440 includes/ajax.php:487 includes/ajax.php:534
+#: includes/ajax.php:588 includes/ajax.php:641 includes/backend.php:148
+#: includes/backend.php:165 includes/woo/order.php:1036
+#: includes/woo/order.php:1445 includes/woo/order.php:1449
+#: includes/woo/order.php:1500 includes/woo/order.php:1543
+#: includes/woo/order.php:1577 includes/woo/order.php:1779
+#: includes/woo/order.php:1786 includes/woo/order.php:1849
+#: includes/woo/order.php:1884 includes/woo/order.php:1988
+#: includes/woo/order.php:2029 includes/woo/order.php:2081
+#: includes/woo/order.php:2122 includes/woo/order.php:2238
+msgid "Something went wrong."
+msgstr ""
+
+#: includes/ajax.php:485
+msgid "Advanced settings saved successfully."
+msgstr ""
+
+#: includes/ajax.php:532
+msgid "Payment settings saved successfully."
+msgstr ""
+
+#: includes/ajax.php:558 includes/ajax.php:612
+msgid "There are taxes with the same values."
+msgstr ""
+
+#: includes/ajax.php:585
+msgid "Tax rates settings saved successfully."
+msgstr ""
+
+#: includes/ajax.php:638
+msgid "Tax rates DPDBox settings saved successfully."
+msgstr ""
+
+#: includes/backend.php:85 includes/backend.php:103 includes/woo/order.php:401
+#: includes/woo/orders.php:49 includes/woo/orders.php:64
+msgid "DPD RO"
+msgstr ""
+
+#: includes/backend.php:102 includes/view/settings.php:68
+msgid "Settings"
+msgstr ""
+
+#: includes/backend.php:149
+msgid "Search"
+msgstr ""
+
+#: includes/backend.php:166
+msgid "There are no tax settings."
+msgstr ""
+
+#: includes/backend.php:167
+msgid ""
+"You must save tax rates modification. If you not save the modification will "
+"not be done."
+msgstr ""
+
+#: includes/backend.php:169 includes/view/settings.php:409
+#: includes/view/settings.php:412 includes/view/settings.php:541
+#: includes/view/settings.php:544
+msgid "Based on price"
+msgstr ""
+
+#: includes/backend.php:170 includes/view/settings.php:410
+#: includes/view/settings.php:413 includes/view/settings.php:542
+#: includes/view/settings.php:545
+msgid "Based on weight"
+msgstr ""
+
+#: includes/backend.php:171 includes/view/settings.php:432
+#: includes/view/settings.php:435 includes/view/settings.php:564
+#: includes/view/settings.php:567
+msgid "Fixed"
+msgstr ""
+
+#: includes/backend.php:172 includes/view/settings.php:433
+#: includes/view/settings.php:436 includes/view/settings.php:565
+#: includes/view/settings.php:568
+msgid "Percentage"
+msgstr ""
+
+#: includes/backend.php:173 includes/view/settings.php:445
+#: includes/view/settings.php:448 includes/view/settings.php:577
+#: includes/view/settings.php:580 includes/view/settings.php:759
+#: includes/view/settings.php:762
+msgid "Enabled"
+msgstr ""
+
+#: includes/backend.php:174 includes/view/settings.php:446
+#: includes/view/settings.php:449 includes/view/settings.php:578
+#: includes/view/settings.php:581 includes/view/settings.php:760
+#: includes/view/settings.php:763
+msgid "Disabled"
+msgstr ""
+
+#: includes/backend.php:175 includes/view/settings.php:456
+#: includes/view/settings.php:588
+msgid "Remove"
+msgstr ""
+
+#: includes/backend.php:176 includes/view/settings.php:199
+#: includes/view/settings.php:212 includes/view/settings.php:324
+msgid " --- Please Select --- "
+msgstr ""
+
+#: includes/backend.php:177 includes/view/settings.php:465
+#: includes/view/settings.php:597
+msgid "No tax rate found."
+msgstr ""
+
+#: includes/backend.php:315 includes/backend.php:318
+msgid "You don't have permissions to view this page."
+msgstr ""
+
+#: includes/frontend.php:18 includes/frontend.php:111
+#: includes/frontend.php:177 includes/frontend.php:217
+msgid "No office selected"
+msgstr ""
+
+#: includes/frontend.php:106
+msgid "DPD RO offices map"
+msgstr ""
+
+#: includes/frontend.php:308 includes/frontend.php:344
+msgid "Cash on delivery DPD RO"
+msgstr ""
+
+#: includes/data/lists.php:111
+msgid "All / Rest DPDBox"
+msgstr ""
+
+#: includes/data/zones.php:16
+msgid "Rest of the World"
+msgstr ""
+
+#: includes/view/message.php:3
+msgid "DPD RO Shipping / Payment"
+msgstr ""
+
+#: includes/view/message.php:7
+msgid ""
+"WooCommerce is not activated on your application. In order to have access to "
+"DPD RO Shipping / Payment, you must have WooCommerce installed and activated "
+"on your application."
+msgstr ""
+
+#: includes/view/settings.php:69 includes/view/settings.php:358
+msgid "Tax rates address"
+msgstr ""
+
+#: includes/view/settings.php:70 includes/view/settings.php:490
+msgid "Tax rates DPD RO box"
+msgstr ""
+
+#: includes/view/settings.php:71 includes/view/settings.php:622
+msgid "Advanced settings"
+msgstr ""
+
+#: includes/view/settings.php:72 includes/view/settings.php:684
+msgid "Payment settings"
+msgstr ""
+
+#: includes/view/settings.php:77
+msgid "Authentication"
+msgstr ""
+
+#: includes/view/settings.php:82
+msgid "Username"
+msgstr ""
+
+#: includes/view/settings.php:86
+msgid "Password"
+msgstr ""
+
+#: includes/view/settings.php:93
+msgid "Update connection"
+msgstr ""
+
+#: includes/view/settings.php:98
+msgid "Connect"
+msgstr ""
+
+#: includes/view/settings.php:105
+msgid "Packaging Method"
+msgstr ""
+
+#: includes/view/settings.php:110 includes/woo/shipment.php:539
+msgid "Package"
+msgstr ""
+
+#: includes/view/settings.php:119
+msgid "Content"
+msgstr ""
+
+#: includes/view/settings.php:129
+msgid "Packaging method"
+msgstr ""
+
+#: includes/view/settings.php:135 includes/view/settings.php:144
+msgid "One parcel for all product"
+msgstr ""
+
+#: includes/view/settings.php:139 includes/view/settings.php:148
+msgid "One parcel for one product"
+msgstr ""
+
+#: includes/view/settings.php:157 includes/view/settings.php:187
+#: includes/view/settings.php:349
+msgid "Save settings"
+msgstr ""
+
+#: includes/view/settings.php:162 includes/view/settings.php:167
+msgid "Services"
+msgstr ""
+
+#: includes/view/settings.php:192
+msgid "Sender & Payer"
+msgstr ""
+
+#: includes/view/settings.php:197
+msgid "Pickup / shipping address"
+msgstr ""
+
+#: includes/view/settings.php:210
+msgid "Personal delivery DPD RO Pickup"
+msgstr ""
+
+#: includes/view/settings.php:224
+msgid "Send insurance value"
+msgstr ""
+
+#: includes/view/settings.php:230 includes/view/settings.php:239
+#: includes/view/settings.php:258 includes/view/settings.php:267
+msgid "Yes"
+msgstr ""
+
+#: includes/view/settings.php:234 includes/view/settings.php:243
+#: includes/view/settings.php:262 includes/view/settings.php:271
+msgid "No"
+msgstr ""
+
+#: includes/view/settings.php:247
+msgid ""
+"Select <b>\"Yes\"</b> if you want to send the insurance value when creating "
+"the shipment"
+msgstr ""
+
+#: includes/view/settings.php:252
+msgid "Include shipping price"
+msgstr ""
+
+#: includes/view/settings.php:275
+msgid ""
+"Select <b>\"Yes\"</b> if you want to add the transport value to the COD "
+"amount."
+msgstr ""
+
+#: includes/view/settings.php:280
+msgid "Courier service payer"
+msgstr ""
+
+#: includes/view/settings.php:292
+msgid "ID payer contract"
+msgstr ""
+
+#: includes/view/settings.php:297
+msgid "Print format"
+msgstr ""
+
+#: includes/view/settings.php:309
+msgid "Print paper size"
+msgstr ""
+
+#: includes/view/settings.php:322
+msgid "Options on Payment / Delivery"
+msgstr ""
+
+#: includes/view/settings.php:335
+msgid "Return shipment payer"
+msgstr ""
+
+#: includes/view/settings.php:365 includes/view/settings.php:497
+msgid "Service"
+msgstr ""
+
+#: includes/view/settings.php:366
+msgid "Zone"
+msgstr ""
+
+#: includes/view/settings.php:367 includes/view/settings.php:499
+msgid "Condition"
+msgstr ""
+
+#: includes/view/settings.php:368 includes/view/settings.php:500
+msgid "From"
+msgstr ""
+
+#: includes/view/settings.php:369 includes/view/settings.php:501
+msgid "Price / Quantity"
+msgstr ""
+
+#: includes/view/settings.php:370 includes/view/settings.php:502
+msgid "Calculation"
+msgstr ""
+
+#: includes/view/settings.php:371 includes/view/settings.php:503
+msgid "Status"
+msgstr ""
+
+#: includes/view/settings.php:372 includes/view/settings.php:504
+#: includes/view/settings.php:704
+msgid "Action"
+msgstr ""
+
+#: includes/view/settings.php:474 includes/view/settings.php:606
+msgid "Add new tax rate"
+msgstr ""
+
+#: includes/view/settings.php:478 includes/view/settings.php:610
+msgid "Save tax rates"
+msgstr ""
+
+#: includes/view/settings.php:498
+msgid "Offices Zone"
+msgstr ""
+
+#: includes/view/settings.php:627
+msgid "Max parcel weight (kg)"
+msgstr ""
+
+#: includes/view/settings.php:629
+msgid ""
+"Default value is <b>\"31.5\"</b> - copy in the field above if use default."
+msgstr ""
+
+#: includes/view/settings.php:633
+msgid "Max parcel weight automat (kg)"
+msgstr ""
+
+#: includes/view/settings.php:635
+msgid ""
+"Default value is <b>\"20\"</b> - copy in the field above if use default."
+msgstr ""
+
+#: includes/view/settings.php:639
+msgid "Show DPD RO box selection"
+msgstr ""
+
+#: includes/view/settings.php:648
+msgid "If it is checked, customer can select \"Pickup / shipping address\"."
+msgstr ""
+
+#: includes/view/settings.php:655
+msgid "Use default weight"
+msgstr ""
+
+#: includes/view/settings.php:664
+msgid "If it checked, will use default weight if product doesn't have weight."
+msgstr ""
+
+#: includes/view/settings.php:670
+msgid "Default weight (kg)"
+msgstr ""
+
+#: includes/view/settings.php:672
+msgid "Default value is <b>\"1\"</b> - copy in the field above if use default."
+msgstr ""
+
+#: includes/view/settings.php:677
+msgid "Save advanced settings"
+msgstr ""
+
+#: includes/view/settings.php:689
+msgid "DPD RO contract payment tax"
+msgstr ""
+
+#: includes/view/settings.php:692
+msgid "This tax comes from your DPD RO contract."
+msgstr ""
+
+#: includes/view/settings.php:693
+msgid "If you are not agree with this tax you can add your own tax below."
+msgstr ""
+
+#: includes/view/settings.php:700
+msgid "Geo zone"
+msgstr ""
+
+#: includes/view/settings.php:701
+msgid "Tax type"
+msgstr ""
+
+#: includes/view/settings.php:702
+msgid "Tax rate"
+msgstr ""
+
+#: includes/view/settings.php:703
+msgid "VAT rate in (%) like 20"
+msgstr ""
+
+#: includes/view/settings.php:736 includes/view/settings.php:739
+msgid "Custom"
+msgstr ""
+
+#: includes/view/settings.php:737 includes/view/settings.php:740
+msgid "DPD RO contract"
+msgstr ""
+
+#: includes/view/settings.php:773
+msgid "No payments found"
+msgstr ""
+
+#: includes/view/settings.php:781
+msgid "Save payment settings"
+msgstr ""
+
+#: includes/woo/address.php:28 includes/woo/office.php:28
+msgid "Add DPD RO address for Order ID"
+msgstr ""
+
+#: includes/woo/address.php:59 includes/woo/address.php:64
+#: includes/woo/address.php:69 includes/woo/address.php:74
+msgid "Delivery"
+msgstr ""
+
+#: includes/woo/address.php:61 includes/woo/address.php:71
+#: includes/woo/office.php:49
+msgid "Pickup"
+msgstr ""
+
+#: includes/woo/address.php:82 includes/woo/validation.php:53
+msgid "Country"
+msgstr ""
+
+#: includes/woo/address.php:88 includes/woo/validation.php:59
+msgid "State"
+msgstr ""
+
+#: includes/woo/address.php:102 includes/woo/validation.php:66
+msgid "City"
+msgstr ""
+
+#: includes/woo/address.php:102
+msgid "order city:"
+msgstr ""
+
+#: includes/woo/address.php:181 includes/woo/validation.php:82
+msgid "Street"
+msgstr ""
+
+#: includes/woo/address.php:247 includes/woo/validation.php:148
+msgid "Number"
+msgstr ""
+
+#: includes/woo/address.php:253 includes/woo/validation.php:154
+msgid "Block"
+msgstr ""
+
+#: includes/woo/address.php:259 includes/woo/validation.php:160
+msgid "Apartment"
+msgstr ""
+
+#: includes/woo/address.php:265 includes/woo/validation.php:166
+msgid "Postcode"
+msgstr ""
+
+#: includes/woo/address.php:279 includes/woo/office.php:54
+msgid "Pickup from office"
+msgstr ""
+
+#: includes/woo/address.php:302 includes/woo/office.php:71
+#: includes/woo/shipping.php:325 includes/woo/validation.php:187
+msgid "Go back to create shipment"
+msgstr ""
+
+#: includes/woo/address.php:305
+msgid "Save address"
+msgstr ""
+
+#: includes/woo/model.php:30 includes/woo/services/2002.php:30
+#: includes/woo/services/2005.php:30 includes/woo/services/2113.php:30
+#: includes/woo/services/2212.php:30 includes/woo/services/2214.php:30
+#: includes/woo/services/2303.php:30 includes/woo/services/2323.php:30
+#: includes/woo/services/2324.php:30 includes/woo/services/2412.php:30
+#: includes/woo/services/2432.php:30 includes/woo/services/2505.php:30
+msgid "Allows shipping with DPD RO."
+msgstr ""
+
+#: includes/woo/model.php:50 includes/woo/services/2002.php:50
+#: includes/woo/services/2005.php:50 includes/woo/services/2113.php:50
+#: includes/woo/services/2212.php:50 includes/woo/services/2214.php:50
+#: includes/woo/services/2303.php:50 includes/woo/services/2323.php:50
+#: includes/woo/services/2324.php:50 includes/woo/services/2412.php:50
+#: includes/woo/services/2432.php:50 includes/woo/services/2505.php:50
+msgid "Method title"
+msgstr ""
+
+#: includes/woo/model.php:52 includes/woo/services/2002.php:52
+#: includes/woo/services/2005.php:52 includes/woo/services/2113.php:52
+#: includes/woo/services/2212.php:52 includes/woo/services/2214.php:52
+#: includes/woo/services/2303.php:52 includes/woo/services/2323.php:52
+#: includes/woo/services/2324.php:52 includes/woo/services/2412.php:52
+#: includes/woo/services/2432.php:52 includes/woo/services/2505.php:52
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/woo/model.php:58 includes/woo/services/2002.php:58
+#: includes/woo/services/2005.php:58 includes/woo/services/2113.php:58
+#: includes/woo/services/2212.php:58 includes/woo/services/2214.php:58
+#: includes/woo/services/2303.php:58 includes/woo/services/2323.php:58
+#: includes/woo/services/2324.php:58 includes/woo/services/2412.php:58
+#: includes/woo/services/2432.php:58 includes/woo/services/2505.php:58
+msgid "Tax status"
+msgstr ""
+
+#: includes/woo/model.php:63 includes/woo/services/2002.php:63
+#: includes/woo/services/2005.php:63 includes/woo/services/2113.php:63
+#: includes/woo/services/2212.php:63 includes/woo/services/2214.php:63
+#: includes/woo/services/2303.php:63 includes/woo/services/2323.php:63
+#: includes/woo/services/2324.php:63 includes/woo/services/2412.php:63
+#: includes/woo/services/2432.php:63 includes/woo/services/2505.php:63
+msgid "Taxable"
+msgstr ""
+
+#: includes/woo/model.php:64 includes/woo/services/2002.php:64
+#: includes/woo/services/2005.php:64 includes/woo/services/2113.php:64
+#: includes/woo/services/2212.php:64 includes/woo/services/2214.php:64
+#: includes/woo/services/2303.php:64 includes/woo/services/2323.php:64
+#: includes/woo/services/2324.php:64 includes/woo/services/2412.php:64
+#: includes/woo/services/2432.php:64 includes/woo/services/2505.php:64
+msgctxt "Tax status"
+msgid "None"
+msgstr ""
+
+#: includes/woo/model.php:68 includes/woo/services/2002.php:68
+#: includes/woo/services/2005.php:68 includes/woo/services/2113.php:68
+#: includes/woo/services/2212.php:68 includes/woo/services/2214.php:68
+#: includes/woo/services/2303.php:68 includes/woo/services/2323.php:68
+#: includes/woo/services/2324.php:68 includes/woo/services/2412.php:68
+#: includes/woo/services/2432.php:68 includes/woo/services/2505.php:68
+msgid "Cost"
+msgstr ""
+
+#: includes/woo/model.php:71 includes/woo/services/2002.php:71
+#: includes/woo/services/2005.php:71 includes/woo/services/2113.php:71
+#: includes/woo/services/2212.php:71 includes/woo/services/2214.php:71
+#: includes/woo/services/2303.php:71 includes/woo/services/2323.php:71
+#: includes/woo/services/2324.php:71 includes/woo/services/2412.php:71
+#: includes/woo/services/2432.php:71 includes/woo/services/2505.php:71
+msgid ""
+"Enter a cost (excl. tax) or sum, e.g. 10.00 or let 0 to take DPD RO service "
+"price."
+msgstr ""
+
+#: includes/woo/office.php:74
+msgid "Save office"
+msgstr ""
+
+#: includes/woo/order.php:417 includes/woo/order.php:471
+#: includes/woo/orders.php:111 includes/woo/orders.php:167
+msgid "Print labels"
+msgstr ""
+
+#: includes/woo/order.php:425 includes/woo/order.php:479
+#: includes/woo/orders.php:119 includes/woo/orders.php:175
+msgid "Print voucher"
+msgstr ""
+
+#: includes/woo/order.php:431 includes/woo/orders.php:125
+msgid "Order has been picked up"
+msgstr ""
+
+#: includes/woo/order.php:440 includes/woo/order.php:521
+#: includes/woo/orders.php:135 includes/woo/orders.php:217
+msgid "Print labels for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:448 includes/woo/order.php:529
+#: includes/woo/orders.php:143 includes/woo/orders.php:225
+msgid "Print voucher for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:454 includes/woo/orders.php:149
+msgid "Order without DPD RO shipping method has been picked up"
+msgstr ""
+
+#: includes/woo/order.php:468 includes/woo/orders.php:164
+msgid "Delete shipment"
+msgstr ""
+
+#: includes/woo/order.php:487 includes/woo/orders.php:183
+msgid "Request courier"
+msgstr ""
+
+#: includes/woo/order.php:493 includes/woo/orders.php:189
+msgid "Track"
+msgstr ""
+
+#: includes/woo/order.php:499 includes/woo/orders.php:195
+msgid "A courier has been requested for order"
+msgstr ""
+
+#: includes/woo/order.php:507 includes/woo/orders.php:203
+msgid "Create shipment"
+msgstr ""
+
+#: includes/woo/order.php:518 includes/woo/orders.php:214
+msgid "Delete shipment for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:537 includes/woo/orders.php:233
+msgid "Request courier for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:543 includes/woo/orders.php:239
+msgid "Track for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:549 includes/woo/orders.php:245
+msgid "A courier has been requested for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:557 includes/woo/orders.php:253
+msgid "Create shipment for order without DPD RO shipping method"
+msgstr ""
+
+#: includes/woo/order.php:603
+msgid "Tracking url"
+msgstr ""
+
+#: includes/woo/order.php:1116
+msgid "Woo v3.0 ID: "
+msgstr ""
+
+#: includes/woo/order.php:1441
+msgid "Shipment created successfully."
+msgstr ""
+
+#: includes/woo/order.php:1442
+#, php-format
+msgid "Shipment created successfully for %s."
+msgstr ""
+
+#: includes/woo/order.php:1497
+#, php-format
+msgid "Shipment with %s deleted successfully for %s."
+msgstr ""
+
+#: includes/woo/order.php:1648 includes/woo/order.php:1651
+#: includes/woo/order.php:1652
+msgid "No city found"
+msgstr ""
+
+#: includes/woo/order.php:1766
+msgid "Address has been validated successfully."
+msgstr ""
+
+#: includes/woo/order.php:1844
+msgid "Requested courier successfully."
+msgstr ""
+
+#: includes/woo/order.php:1982
+msgid "DPD RO order address and settings has been added successfully."
+msgstr ""
+
+#: includes/woo/order.php:2075
+msgid "DPD RO order office has been updated successfully."
+msgstr ""
+
+#: includes/woo/order.php:2232
+msgid "DPD RO order shipping method has been added successfully."
+msgstr ""
+
+#: includes/woo/shipment.php:32
+msgid "Create shipment Order ID:"
+msgstr ""
+
+#: includes/woo/shipment.php:41
+msgid ""
+"We switch \"Courier service payer\" to \"SENDER\" because the order has a "
+"different payment method than \"COD\"."
+msgstr ""
+
+#: includes/woo/shipment.php:73 includes/woo/shipment.php:92
+msgid "Order shipping method:"
+msgstr ""
+
+#: includes/woo/shipment.php:77
+msgid "DPD RO shipping method selected:"
+msgstr ""
+
+#: includes/woo/shipment.php:83
+msgid "Change shipping method"
+msgstr ""
+
+#: includes/woo/shipment.php:96
+msgid "No DPD RO shipping method selected."
+msgstr ""
+
+#: includes/woo/shipment.php:101
+msgid "Add shipping method"
+msgstr ""
+
+#: includes/woo/shipment.php:119 includes/woo/shipment.php:134
+#: includes/woo/shipment.php:145 includes/woo/shipment.php:153
+msgid "DPD RO order delivery address:"
+msgstr ""
+
+#: includes/woo/shipment.php:130
+msgid "Change address"
+msgstr ""
+
+#: includes/woo/shipment.php:138 includes/woo/shipment.php:160
+msgid "Skip validation address"
+msgstr ""
+
+#: includes/woo/shipment.php:141 includes/woo/shipment.php:149
+#: includes/woo/shipment.php:157 includes/woo/validation.php:190
+msgid "Validate address"
+msgstr ""
+
+#: includes/woo/shipment.php:167
+msgid "DPD RO order pickup address:"
+msgstr ""
+
+#: includes/woo/shipment.php:172
+msgid "Change office"
+msgstr ""
+
+#: includes/woo/shipment.php:177
+msgid "No DPD RO address stored for this order."
+msgstr ""
+
+#: includes/woo/shipment.php:180
+msgid "Add DPD RO address"
+msgstr ""
+
+#: includes/woo/shipment.php:185
+msgid "WooCommerce order address:"
+msgstr ""
+
+#: includes/woo/shipment.php:193
+msgid "Group the products in your shipment into parcels"
+msgstr ""
+
+#: includes/woo/shipment.php:194
+msgid ""
+"This module lets you organize your products into parcels using the table "
+"below. Select parcel number."
+msgstr ""
+
+#: includes/woo/shipment.php:206
+msgid "ID"
+msgstr ""
+
+#: includes/woo/shipment.php:207
+msgid "Product"
+msgstr ""
+
+#: includes/woo/shipment.php:208
+msgid "Weight"
+msgstr ""
+
+#: includes/woo/shipment.php:209 includes/woo/shipment.php:350
+msgid "Parcel"
+msgstr ""
+
+#: includes/woo/shipment.php:254
+msgid "kg"
+msgstr ""
+
+#: includes/woo/shipment.php:334
+msgid "NOTE:"
+msgstr ""
+
+#: includes/woo/shipment.php:335
+msgid ""
+"The price may change depending on the distribution of the products in the "
+"parcels"
+msgstr ""
+
+#: includes/woo/shipment.php:343
+msgid "Enter description for each parcel"
+msgstr ""
+
+#: includes/woo/shipment.php:344
+msgid ""
+"You can enter description of each parcel, for communication with courier "
+"services, in the fields below."
+msgstr ""
+
+#: includes/woo/shipment.php:351 includes/woo/shipment.php:371
+#: includes/woo/shipment.php:394 includes/woo/shipment.php:407
+#: includes/woo/shipment.php:429 includes/woo/shipment.php:452
+#: includes/woo/shipment.php:465
+msgid "Description"
+msgstr ""
+
+#: includes/woo/shipment.php:483
+msgid "This is a SWAP shipment"
+msgstr ""
+
+#: includes/woo/shipment.php:487
+msgid "This is a ROD shipment"
+msgstr ""
+
+#: includes/woo/shipment.php:493 includes/woo/shipment.php:500
+msgid "This is a ROP shipment"
+msgstr ""
+
+#: includes/woo/shipment.php:506
+msgid "Return reusable packaging"
+msgstr ""
+
+#: includes/woo/shipment.php:512
+msgid "This shipment has a VOUCHER"
+msgstr ""
+
+#: includes/woo/shipment.php:514
+msgid "SENDER"
+msgstr ""
+
+#: includes/woo/shipment.php:515
+msgid "RECIPIENT"
+msgstr ""
+
+#: includes/woo/shipment.php:520
+msgid "This shipment is on company"
+msgstr ""
+
+#: includes/woo/shipment.php:521
+msgid "Company name"
+msgstr ""
+
+#: includes/woo/shipment.php:552
+msgid "Contents"
+msgstr ""
+
+#: includes/woo/shipment.php:569
+msgid "Shipment note"
+msgstr ""
+
+#: includes/woo/shipment.php:577
+msgid "Shipment ref 2"
+msgstr ""
+
+#: includes/woo/shipment.php:594 includes/woo/shipment.php:604
+#: includes/woo/shipment.php:615 includes/woo/shipment.php:624
+msgid "Cancel"
+msgstr ""
+
+#: includes/woo/shipment.php:597 includes/woo/shipment.php:607
+#: includes/woo/shipment.php:618 includes/woo/shipment.php:627
+msgid "Save shipment"
+msgstr ""
+
+#: includes/woo/shipment.php:600
+msgid "You must validate or skip validation address!"
+msgstr ""
+
+#: includes/woo/shipment.php:611
+msgid "You must add DPD RO address to the order."
+msgstr ""
+
+#: includes/woo/shipment.php:630
+msgid "You must add DPD RO shipping method to the order."
+msgstr ""
+
+#: includes/woo/shipping.php:32
+msgid "Select DPD RO shipping method Order ID:"
+msgstr ""
+
+#: includes/woo/shipping.php:295
+msgid "Shipping method changes history:"
+msgstr ""
+
+#: includes/woo/shipping.php:300
+msgid "Method"
+msgstr ""
+
+#: includes/woo/shipping.php:301
+msgid "Date"
+msgstr ""
+
+#: includes/woo/shipping.php:328
+msgid "Save shipping method"
+msgstr ""
+
+#: includes/woo/validation.php:31
+msgid "Change / Validation address Order ID:"
+msgstr ""
+
+#: includes/woo/validation.php:176
+msgid "Address:"
+msgstr ""
+
+#: library/nomenclature.php:65
+msgid "Open On Payment/Delivery"
+msgstr ""
+
+#: library/nomenclature.php:66
+msgid "Test On Payment/Delivery"
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:54
+msgid "View details"
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:77
+#, php-format
+msgid "More information about %s"
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:128
+msgid "Check for updates"
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:214
+#, php-format
+msgctxt "the plugin title"
+msgid "The %s plugin is up to date."
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:216
+#, php-format
+msgctxt "the plugin title"
+msgid "A new version of the %s plugin is available."
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:218
+#, php-format
+msgctxt "the plugin title"
+msgid "Could not determine if updates are available for %s."
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Plugin/Ui.php:224
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr ""
+
+#: plugin-update-checker/Puc/v4p11/Vcs/PluginUpdateChecker.php:98
+msgid "There is no changelog available."
+msgstr ""
