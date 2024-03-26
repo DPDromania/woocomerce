@@ -8,8 +8,11 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+
 class DataLists
 {
+
+    public const DPD_DISCARDED_SERVICES =  ['PALLET ONE RO', 'PALLET ONE BG'];
 	/** 
 	 * @var wpdb 
 	 */
@@ -30,8 +33,20 @@ class DataLists
 	{
 		$servicesTable = $this->wpdb->prefix . 'dpdro_services';
 		$response = $this->wpdb->get_results($this->wpdb->prepare("SELECT * FROM {$servicesTable}", array()));
-		return $response;
+		return $this->removeDiscardedServices($response);
 	}
+
+    private function removeDiscardedServices($services)
+    {
+        $remaining = [];
+        foreach ($services as $service) {
+            if (!in_array($service->service_name, self::DPD_DISCARDED_SERVICES, true)) {
+                $remaining[] = $service;
+            }
+        }
+
+        return $remaining;
+    }
 
 	/**
 	 * Get DPD RO services list.

@@ -5,6 +5,7 @@
  */
 global $wpdb;
 
+
 /** 
  * Data settings
  */
@@ -61,6 +62,8 @@ $ajaxNonceSaveTaxRate = wp_create_nonce('dpdro_save_tax_rate');
 $ajaxNonceSaveTaxRatesOffices = wp_create_nonce('dpdro_save_tax_rates_offices');
 $ajaxNonceAdvanceSettings = wp_create_nonce('dpdro_advance_settings');
 $ajaxNoncePaymentSettings = wp_create_nonce('dpdro_payment_settings');
+global $wp_version;
+
 ?>
 <div class="dpdro js-dpdro">
     <div class="d-box-nav">
@@ -72,6 +75,7 @@ $ajaxNoncePaymentSettings = wp_create_nonce('dpdro_payment_settings');
             <button type="button" class="d-button dpd js-d-box-nav" data-content="payment"><?php _e('Payment settings', 'dpdro'); ?></button>
         <?php endif; ?>
     </div>
+    <div class="dpd_version">Plugin version: <?= DPDRO_VERSION; ?>  &nbsp; Wordpress version: <?= $wp_version; ?> &nbsp; Woocomerce version: <?= WC_VERSION; ?>  &nbsp; PHP version: <?= phpversion(); ?></div>
     <div class="d-message js-d-message"></div>
     <div data-content="settings" class="active d-box js-d-box-content">
         <h2 id="settings-auth" class="d-title"><?php _e('Authentication', 'dpdro'); ?></h2>

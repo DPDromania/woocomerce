@@ -48,7 +48,7 @@ class LibraryApi
 		$key =  $key . 'cache__' . date('Y_m_d_H_') . $time . '_00' . '__' . sha1($this->apiUrl . $parameters['api'] . '/' . $data);
 		$cache = $this->getCache($key);
 		if ($cache) {
-			//return $cache;
+			return $cache;
 		}
 
 		$connection = curl_init();
@@ -209,7 +209,7 @@ class LibraryApi
 		/** 
 		 * Parcels.
 		 */
-		if (((float) $options['total_weight'] > (float) $options['max_weight']) || $serviceId == '2412') {
+		if (((float) $options['total_weight'] > (float) $options['max_weight']) || $serviceId == '2412' ) {
 			$parameters['data']['content']['parcelsCount'] = (int) $options['parcels'];
 			$parameters['data']['content']['parcels'] = $options['parcels'];
 		}

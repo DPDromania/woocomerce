@@ -17,6 +17,8 @@
  * Requires Woocommerce: 3.9
  */
 
+define('DPDRO_VERSION',  '3.2.14');
+
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
 	die;
