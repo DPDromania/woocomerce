@@ -33,7 +33,7 @@ class WooOrders
     function init()
     {
 
-        if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+        if (class_exists('Automattic\WooCommerce\Utilities\OrderUtil') && OrderUtil::custom_orders_table_usage_is_enabled() ) {
             add_filter( 'woocommerce_shop_order_list_table_columns', array($this, 'loadOrdersActions'));
             add_filter('woocommerce_shop_order_list_table_columns', array($this, 'loadOrdersActionsSortable'));
             add_action('woocommerce_shop_order_list_table_custom_column',  array($this, 'loadOrdersActionsContent'), 10, 2);
