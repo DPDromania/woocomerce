@@ -195,6 +195,7 @@ $settings = $dataSettings->getSettings();
         <?php $products = $order->get_items(); ?>
         <?php if ($products && !empty($products)) : ?>
             <?php
+
             $count = 1;
             $parcelQuantity = 0;
             $parcelQuantityMax = (float) $settings['max_weight'];
@@ -210,7 +211,7 @@ $settings = $dataSettings->getSettings();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $parcelNoPalet = 1; ?>
+                        <?php $parcelNoPalet = 1; $shipmentNode = '';?>
                         <?php foreach ($products as $product) : ?>
                             <?php
                             $productData = $product->get_data();
@@ -222,6 +223,9 @@ $settings = $dataSettings->getSettings();
                             $productWidth =  method_exists($productInfo, 'get_width') ? $productInfo->get_width() : 0;
                             $productDepth =  method_exists($productInfo, 'get_length') ? $productInfo->get_length() : 0;
                             $productHeight =  method_exists($productInfo, 'get_height') ? $productInfo->get_height() : 0;
+
+                            $shipmentNode .=  $productInfo->get_sku() . ' ';
+
                             ?>
                             <?php for ($quantity = 0; $quantity < (int) $productQuantity; $quantity++) : ?>
                                 <tr class="js-d-modal-table-product" data-index="<?= $productData['id']; ?>">
@@ -573,7 +577,7 @@ $settings = $dataSettings->getSettings();
         <div class="d-half">
             <div class="d-field">
                 <label><?php _e('Shipment note', 'dpdro'); ?></label>
-                <textarea name="notes" rows="2"></textarea>
+                <textarea name="notes" rows="2"><?= $shipmentNode; ?></textarea>
             </div>
         </div>
 
