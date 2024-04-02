@@ -101,6 +101,7 @@ class DBGeneral
             'use_default_weight'     => '1',
             'default_weight'         => '1',
             'county_before_city'     => '0',
+            'city_dropdown'         => '0',
             
             /**
              * Payment settings.

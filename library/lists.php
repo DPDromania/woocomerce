@@ -94,6 +94,34 @@ class LibraryLists
 		return $response;
 	}
 
+    public function Cities($countryId)
+    {
+        $parameters = [
+            'api'    => 'location/site/csv/' . $countryId,
+            'method' => 'POST'
+        ];
+        $request = $this->api->request($parameters, 'csv');
+        $lines = explode(PHP_EOL, $request);
+        $cities = [];
+        if (is_array($lines) && !empty($lines) ) {
+            foreach ($lines as $index => $line) {
+                if ($index == 0) {
+                    continue;
+                }
+                $data = explode(',', $line);
+                array_push($cities, [
+                    'city_id'       => $data[0],
+                    'country_id'    => $data[1],
+                    'name'          => $data[6],
+                    'municipality'  => $data[8],
+                    'region'        => $data[10],
+                    'postal_code'   => $data[11]
+                ]);
+            }
+        }
+        return $cities;
+    }
+
 	/** 
 	 * List addresses from csv.
 	 */
@@ -101,11 +129,11 @@ class LibraryLists
 	{
 		$response = array();
 		$fileRO = dirname(__FILE__) . '/sites/' . $country . '.csv';
-		$fileROContent = array_map("str_getcsv", file($fileRO, FILE_SKIP_EMPTY_LINES));
-		$fileROHeader = array_shift($fileROContent);
-		foreach ($fileROContent as $i => $row) {
-			$response[$i] = array_combine($fileROHeader, $row);
-		}
-		return $response;
+        $fileROContent = array_map("str_getcsv", file($fileRO, FILE_SKIP_EMPTY_LINES));
+        $fileROHeader = array_shift($fileROContent);
+        foreach ($fileROContent as $i => $row) {
+            $response[$i] = array_combine($fileROHeader, $row);
+        }
+        return $response;
 	}
 }

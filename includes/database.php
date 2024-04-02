@@ -68,6 +68,7 @@ class Database
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/clients.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/offices.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/addresses.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/cities.php';
 
         $dbDPDServices = new DBDPDServices($this->wpdb);
         $dbDPDServices->activate();
@@ -80,6 +81,9 @@ class Database
 
         $dbDPDAddresses = new DBDPDAddresses($this->wpdb);
         $dbDPDAddresses->activate();
+
+        $dbDPDCities = new DBDPDOCities($this->wpdb);
+        $dbDPDCities->activate();
         
     }
 
@@ -96,7 +100,7 @@ class Database
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/taxrateoffice.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/settings.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/other-method.php';
-        
+
         $dbGeneral = new DBGeneral($this->wpdb);
         $dbGeneral->deactivate();
 
@@ -121,6 +125,7 @@ class Database
         $dbOtherMethod = new DBOtherMethod($this->wpdb);
         $dbOtherMethod->deactivate();
 
+
         /**
          * DPD RO lists.
          */
@@ -128,6 +133,7 @@ class Database
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/clients.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/offices.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/addresses.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/db/dpd/cities.php';
 
         $dbDPDServices = new DBDPDServices($this->wpdb);
         $dbDPDServices->deactivate();
@@ -140,6 +146,9 @@ class Database
 
         $dbDPDAddresses = new DBDPDAddresses($this->wpdb);
         $dbDPDAddresses->deactivate();
+
+        $dbDPDCities = new DBDPDOCities($this->wpdb);
+        $dbDPDCities->deactivate();
 
     }
 }

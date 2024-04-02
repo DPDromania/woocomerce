@@ -377,7 +377,7 @@ msgid ""
 msgstr ""
 
 #: includes/view/settings.php:639
-msgid "Show DPD RO box selection"
+msgid "Show DPD OOH network selection"
 msgstr ""
 
 #: includes/view/settings.php:648

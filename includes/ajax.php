@@ -21,6 +21,8 @@ class Ajax
 	private $tableServices;
 	private $tableClients;
 	private $tableOffices;
+
+    private $tableCities;
 	private $tableAddresses;
 	private $tableSettings;
 	private $tableTaxRates;
@@ -36,6 +38,7 @@ class Ajax
 		$this->tableServices = $this->wpdb->prefix . 'dpdro_services';
 		$this->tableClients = $this->wpdb->prefix . 'dpdro_clients';
 		$this->tableOffices = $this->wpdb->prefix . 'dpdro_offices';
+		$this->tableCities = $this->wpdb->prefix . 'dpdro_cities';
 		$this->tableAddresses = $this->wpdb->prefix . 'dpdro_addresses';
 		$this->tableSettings = $this->wpdb->prefix . 'dpdro_settings';
 		$this->tableTaxRates = $this->wpdb->prefix . 'order_dpd_tax_rates';
@@ -92,6 +95,7 @@ class Ajax
 				$this->insertClients($libraryLists);
 				$this->insertOffices($libraryLists);
 				$this->insertAddresses($libraryLists);
+                $this->insertCities($libraryLists);
 
 				$params['payment_tax'] = $libraryApi->getPaymentTax();
 				$params['authenticated'] = 1;
@@ -161,6 +165,7 @@ class Ajax
 				$this->insertClients($libraryLists);
 				$this->insertOffices($libraryLists);
 				$this->insertAddresses($libraryLists);
+                $this->insertCities($libraryLists);
 
 				$params['payment_tax'] = $libraryApi->getPaymentTax();
 				$params['authenticated'] = 1;
@@ -225,6 +230,36 @@ class Ajax
 			);
 		}
 	}
+
+    /**
+     * Insert cities to database.
+     */
+    public function insertCities($libraryLists)
+    {
+        /**
+         * Empty table.
+         */
+        $this->wpdb->query("TRUNCATE TABLE IF EXISTS `{$this->tableCities}`");
+
+        /**
+         * Insert new records.
+         */
+        $cities = $libraryLists->Cities(642);
+        foreach ($cities as $city) {
+            $this->wpdb->insert(
+                $this->tableCities,
+                array(
+                    'city_id'   => $city['city_id'],
+                    'country_id'   => $city['country_id'],
+                    'name'   => $city['name'],
+                    'municipality' => $city['municipality'],
+                    'region' => $city['region'],
+                    'postal_code' => $city['postal_code']
+                ),
+                array('%s', '%s', '%s', '%s', '%s', '%s')
+            );
+        }
+    }
 
 	/**
 	 * Create services file.

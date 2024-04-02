@@ -94,7 +94,13 @@ class LibraryApi
 			return $error;
 		} else {
 			$cacheDecode = json_decode($success, true);
-			$this->setCache($key, $cacheDecode);
+			if (json_last_error() == JSON_ERROR_NONE) {
+                $this->setCache($key, $cacheDecode);
+            } else if ($json === 'csv') {
+                $this->setCache($key, $success);
+            } else {
+                $json = false;
+            }
 			if ($json) {
 				return $this->getCache($key);
 			} else {

@@ -376,6 +376,7 @@
                     max_weight_automat: $('.js-d-setting[name="max_weight_automat"]').val().trim(),
                     show_office_selection: $('.js-d-setting[name="show_office_selection"]:checked').length ? '1' : '0',
                     county_before_city: $('.js-d-setting[name="county_before_city"]:checked').length ? '1' : '0',
+                    city_dropdown: $('.js-d-setting[name="city_dropdown"]:checked').length ? '1' : '0',
                     use_default_weight: $('.js-d-setting[name="use_default_weight"]:checked').length ? '1' : '0',
                     default_weight: $('.js-d-setting[name="default_weight"]').val().trim(),
                 }

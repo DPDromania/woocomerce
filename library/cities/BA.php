@@ -1,0 +1,105 @@
+<?php
+/**
+ * Bosnia and Herzegovina places
+ *
+ * 
+ * 
+ * 
+ * 
+ */
+
+return [
+	'BA' => [
+	'BOKAGO' => [
+		_x('Foca-Ustikolina', 'BOKAGO', 'dpd-city-select'),
+		_x('Pale-Praca', 'BOKAGO', 'dpd-city-select'),
+	],
+	'POKA' => [
+		_x('Vukosavlje', 'POKA', 'dpd-city-select'),
+	],
+	'TUKA' => [
+		_x('Kalesija', 'TUKA', 'dpd-city-select'),
+	],
+	'ZEKA' => [
+		_x('Kakanj', 'ZEKA', 'dpd-city-select'),
+	],
+	'FEBOANHE' => [
+		_x('Hercegovacko-Neretvanski Kanton', 'FEBOANHE', 'dpd-city-select'),
+		_x('Kanton 10', 'FEBOANHE', 'dpd-city-select'),
+		_x('Kanton Sarajevo', 'FEBOANHE', 'dpd-city-select'),
+		_x('Neretvljanski', 'FEBOANHE', 'dpd-city-select'),
+		_x('Srednjobosanski Kanton', 'FEBOANHE', 'dpd-city-select'),
+		_x('Unsko-Sanski Kanton', 'FEBOANHE', 'dpd-city-select'),
+		_x('Zapadnohercegovacki Kanton', 'FEBOANHE', 'dpd-city-select'),
+	],
+	'RESR' => [
+		_x('Banja Luka', 'RESR', 'dpd-city-select'),
+		_x('Bijeljina', 'RESR', 'dpd-city-select'),
+		_x('Bratunac', 'RESR', 'dpd-city-select'),
+		_x('Derventa', 'RESR', 'dpd-city-select'),
+		_x('Doboj', 'RESR', 'dpd-city-select'),
+		_x('Foca', 'RESR', 'dpd-city-select'),
+		_x('Gacko', 'RESR', 'dpd-city-select'),
+		_x('Grad Istocno Sarajevo', 'RESR', 'dpd-city-select'),
+		_x('Han Pijesak', 'RESR', 'dpd-city-select'),
+		_x('Istocna Ilidza', 'RESR', 'dpd-city-select'),
+		_x('Istocni Drvar', 'RESR', 'dpd-city-select'),
+		_x('Istocni Mostar', 'RESR', 'dpd-city-select'),
+		_x('Istocni Stari Grad', 'RESR', 'dpd-city-select'),
+		_x('Istocno Novo Sarajevo', 'RESR', 'dpd-city-select'),
+		_x('Jezero', 'RESR', 'dpd-city-select'),
+		_x('Kalinovik', 'RESR', 'dpd-city-select'),
+		_x('Kostajnica', 'RESR', 'dpd-city-select'),
+		_x('Ljubinje', 'RESR', 'dpd-city-select'),
+		_x('Lopare', 'RESR', 'dpd-city-select'),
+		_x('Modrica', 'RESR', 'dpd-city-select'),
+		_x('Mrkonjic Grad Jug Opcina', 'RESR', 'dpd-city-select'),
+		_x('Novo Gorazde', 'RESR', 'dpd-city-select'),
+		_x('Opcina Donji Zabar', 'RESR', 'dpd-city-select'),
+		_x('Opcina Knezevo', 'RESR', 'dpd-city-select'),
+		_x('Opstina Berkovici', 'RESR', 'dpd-city-select'),
+		_x('Opstina Bileca', 'RESR', 'dpd-city-select'),
+		_x('Opstina Brod', 'RESR', 'dpd-city-select'),
+		_x('Opstina Cajnice', 'RESR', 'dpd-city-select'),
+		_x('Opstina Celinac', 'RESR', 'dpd-city-select'),
+		_x('Opstina Gradiska', 'RESR', 'dpd-city-select'),
+		_x('Opstina Kotor Varos', 'RESR', 'dpd-city-select'),
+		_x('Opstina Kozarska Dubica', 'RESR', 'dpd-city-select'),
+		_x('Opstina Krupa na Uni', 'RESR', 'dpd-city-select'),
+		_x('Opstina Kupres', 'RESR', 'dpd-city-select'),
+		_x('Opstina Laktasi', 'RESR', 'dpd-city-select'),
+		_x('Opstina Milici', 'RESR', 'dpd-city-select'),
+		_x('Opstina Modrica', 'RESR', 'dpd-city-select'),
+		_x('Opstina Mrkonjic Grad', 'RESR', 'dpd-city-select'),
+		_x('Opstina Nevesinje', 'RESR', 'dpd-city-select'),
+		_x('Opstina Novi Grad', 'RESR', 'dpd-city-select'),
+		_x('Opstina Osmaci', 'RESR', 'dpd-city-select'),
+		_x('Opstina Ostra Luka', 'RESR', 'dpd-city-select'),
+		_x('Opstina Pale', 'RESR', 'dpd-city-select'),
+		_x('Opstina Pelagicevo', 'RESR', 'dpd-city-select'),
+		_x('Opstina Petrovac', 'RESR', 'dpd-city-select'),
+		_x('Opstina Petrovo', 'RESR', 'dpd-city-select'),
+		_x('Opstina Ribnik', 'RESR', 'dpd-city-select'),
+		_x('Opstina Samac', 'RESR', 'dpd-city-select'),
+		_x('Opstina Sekovici', 'RESR', 'dpd-city-select'),
+		_x('Opstina Sipovo', 'RESR', 'dpd-city-select'),
+		_x('Opstina Sokolac', 'RESR', 'dpd-city-select'),
+		_x('Opstina Teslic', 'RESR', 'dpd-city-select'),
+		_x('Opstina Trnovo', 'RESR', 'dpd-city-select'),
+		_x('Opstina Ugljevik', 'RESR', 'dpd-city-select'),
+		_x('Opstina Visegrad', 'RESR', 'dpd-city-select'),
+		_x('Opstina Vukosavlje', 'RESR', 'dpd-city-select'),
+		_x('Prijedor', 'RESR', 'dpd-city-select'),
+		_x('Prnjavor', 'RESR', 'dpd-city-select'),
+		_x('Rogatica', 'RESR', 'dpd-city-select'),
+		_x('Rudo', 'RESR', 'dpd-city-select'),
+		_x('Skelani Opstina', 'RESR', 'dpd-city-select'),
+		_x('Srbac', 'RESR', 'dpd-city-select'),
+		_x('Srebrenica', 'RESR', 'dpd-city-select'),
+		_x('Stanari', 'RESR', 'dpd-city-select'),
+		_x('Trebinje', 'RESR', 'dpd-city-select'),
+		_x('Vlasenica', 'RESR', 'dpd-city-select'),
+		_x('Zvornik', 'RESR', 'dpd-city-select'),
+	],
+	]
+];

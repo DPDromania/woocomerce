@@ -1,0 +1,75 @@
+<?php
+/**
+ * Republic of South Africa states
+ *
+ *
+ 
+ * 
+ * 
+ */
+
+return [
+	'ZA' => [
+		'ALNZDIMU' => __( 'Alfred Nzo District Municipality', 'dpd-city-select' ),
+		'AMDIMU' => __( 'Amajuba District Municipality', 'dpd-city-select' ),
+		'AMDIMU2' => __( 'Amathole District Municipality', 'dpd-city-select' ),
+		'BOPLDIMU' => __( 'Bojanala Platinum District Municipality', 'dpd-city-select' ),
+		'BUCIMEMU' => __( 'Buffalo City Metropolitan Municipality', 'dpd-city-select' ),
+		'CAWIDIMU' => __( 'Cape Winelands District Municipality', 'dpd-city-select' ),
+		'CADIMU' => __( 'Capricorn District Municipality', 'dpd-city-select' ),
+		'CEKADIMU' => __( 'Central Karoo District Municipality', 'dpd-city-select' ),
+		'CHHADIMU' => __( 'Chris Hani District Municipality', 'dpd-city-select' ),
+		'CICATO' => __( 'City of Cape Town', 'dpd-city-select' ),
+		'CIJOMEMU' => __( 'City of Johannesburg Metropolitan Munici', 'dpd-city-select' ),
+		'CITSMEMU' => __( 'City of Tshwane Metropolitan Municipalit', 'dpd-city-select' ),
+		'KEKADIMU' => __( 'Dr Kenneth Kaunda District Municipality', 'dpd-city-select' ),
+		'RUSEMODIMU' => __( 'Dr Ruth Segomotsi Mompati District Munic', 'dpd-city-select' ),
+		'EDDIMU' => __( 'Eden District Municipality', 'dpd-city-select' ),
+		'EHDI' => __( 'Ehlanzeni District', 'dpd-city-select' ),
+		'EKMEMU' => __( 'Ekurhuleni Metropolitan Municipality', 'dpd-city-select' ),
+		'FEDADIMU' => __( 'Fezile Dabi District Municipality', 'dpd-city-select' ),
+		'FRBADIMU' => __( 'Frances Baard District Municipality', 'dpd-city-select' ),
+		'GESIDIMU' => __( 'Gert Sibande District Municipality', 'dpd-city-select' ),
+		'JOGQDIMU' => __( 'Joe Gqabi District Municipality', 'dpd-city-select' ),
+		'JOTAGADIMU' => __( 'John Taolo Gaetsewe District Municipalit', 'dpd-city-select' ),
+		'LEDIMU' => __( 'Lejweleputswa District Municipality', 'dpd-city-select' ),
+		'MAMEMU' => __( 'Mangaung Metropolitan Municipality', 'dpd-city-select' ),
+		'MODIMU' => __( 'Mopani District Municipality', 'dpd-city-select' ),
+		'NADIMU' => __( 'Namakwa District Municipality', 'dpd-city-select' ),
+		'NEMABAMEMU' => __( 'Nelson Mandela Bay Metropolitan Municipa', 'dpd-city-select' ),
+		'NGMOMODIMU' => __( 'Ngaka Modiri Molema District Municipalit', 'dpd-city-select' ),
+		'NKDIMU' => __( 'Nkangala District Municipality', 'dpd-city-select' ),
+		'TADIMU' => __( 'OR Tambo District Municipality', 'dpd-city-select' ),
+		'OVDIMU' => __( 'Overberg District Municipality', 'dpd-city-select' ),
+		'PISEDIMU' => __( 'Pixley ka Seme District Municipality', 'dpd-city-select' ),
+		'SABADIMU' => __( 'Sarah Baartman District Municipality', 'dpd-city-select' ),
+		'SEDIMU' => __( 'Sedibeng District Municipality', 'dpd-city-select' ),
+		'SEDIMU2' => __( 'Sekhukhune District Municipality', 'dpd-city-select' ),
+		'SIDIMU' => __( 'Sisonke District Municipality', 'dpd-city-select' ),
+		'SIDIMU2' => __( 'Siyanda District Municipality', 'dpd-city-select' ),
+		'THMODIMU' => __( 'Thabo Mofutsanyana District Municipality', 'dpd-city-select' ),
+		'UGDIMU' => __( 'Ugu District Municipality', 'dpd-city-select' ),
+		'VHDIMU' => __( 'Vhembe District Municipality', 'dpd-city-select' ),
+		'WADIMU' => __( 'Waterberg District Municipality', 'dpd-city-select' ),
+		'WECODIMU' => __( 'West Coast District Municipality', 'dpd-city-select' ),
+		'WERADIMU' => __( 'West Rand District Municipality', 'dpd-city-select' ),
+		'XHDIMU' => __( 'Xhariep District Municipality', 'dpd-city-select' ),
+		'ZUDIMU' => __( 'Zululand District Municipality', 'dpd-city-select' ),
+		'ETMEMU' => __( 'eThekwini Metropolitan Municipality', 'dpd-city-select' ),
+		'ILDIMU' => __( 'iLembe District Municipality', 'dpd-city-select' ),
+		'UMDIMU' => __( 'uMgungundlovu District Municipality', 'dpd-city-select' ),
+		'UMDIMU2' => __( 'uMkhanyakude District Municipality', 'dpd-city-select' ),
+		'UMDIMU3' => __( 'uMzinyathi District Municipality', 'dpd-city-select' ),
+		'UTDIMU' => __( 'uThukela District Municipality', 'dpd-city-select' ),
+		'UTDIMU2' => __( 'uThungulu District Municipality', 'dpd-city-select' ),
+		'EACA' => __( 'Eastern Cape', 'dpd-city-select' ),
+		'FRST' => __( 'Free State', 'dpd-city-select' ),
+		'GA' => __( 'Gauteng', 'dpd-city-select' ),
+		'KW' => __( 'KwaZulu-Natal', 'dpd-city-select' ),
+		'LI' => __( 'Limpopo', 'dpd-city-select' ),
+		'MP' => __( 'Mpumalanga', 'dpd-city-select' ),
+		'NOWE' => __( 'North West', 'dpd-city-select' ),
+		'NOCA' => __( 'Northern Cape', 'dpd-city-select' ),
+		'WECA' => __( 'Western Cape', 'dpd-city-select' ),
+	]
+];

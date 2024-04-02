@@ -613,7 +613,7 @@ global $wp_version;
                         </div>
                         <hr>
                         <div class="d-field">
-                            <label for="d-setting-advanced-show-office-selection"><?php _e('Show DPD RO box selection', 'dpdro'); ?>:</label>
+                            <label for="d-setting-advanced-show-office-selection"><?php _e('Show DPD OOH network selection', 'dpdro'); ?>:</label>
                             <div class="d-field-list">
                                 <ul>
                                     <li class="d-checkbox">
@@ -660,6 +660,21 @@ global $wp_version;
                                             <input class="js-d-setting" id="d-setting-advanced-county-before-city" type="checkbox" name="county_before_city" value="1" />
                                         <?php endif ?>
                                         <label for="d-setting-advanced-county-before-city"><?php _e('If it is checked, the county field will be before city field.', 'dpdro') ?></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="d-field">
+                            <label for="d-setting-advanced-city-select"><?php _e('Use city dropdown', 'dpdro'); ?>:</label>
+                            <div class="d-field-list">
+                                <ul>
+                                    <li class="d-checkbox">
+                                        <?php if ($dataSettings['city_dropdown'] == '1') : ?>
+                                            <input class="js-d-setting" id="d-setting-advanced-city-select" type="checkbox" name="city_dropdown" value="1" checked />
+                                        <?php else : ?>
+                                            <input class="js-d-setting" id="d-setting-advanced-city-select" type="checkbox" name="city_dropdown" value="1" />
+                                        <?php endif ?>
+                                        <label for="d-setting-advanced-city-select"><?php _e('If it is checked, a dropdown will be shown for city instead of an input type text.', 'dpdro') ?></label>
                                     </li>
                                 </ul>
                             </div>

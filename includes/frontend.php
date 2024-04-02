@@ -8,6 +8,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+
+
 /**
  * Global variables.
  */
@@ -29,6 +31,10 @@ class Frontend
 	 * The version of this plugin.
 	 */
 	private $version;
+
+    /** @var  */
+    private $cities;
+
 
 	/**
 	 * Constructor.
@@ -64,7 +70,7 @@ class Frontend
 		 * Shipping.
 		 */
 		add_filter('woocommerce_form_field_text', array($this, 'checkoutFields'), 10, 2);
-		add_filter('woocommerce_cart_shipping_packages', array($this, 'shippingPackages'));
+        add_filter('woocommerce_cart_shipping_packages', array($this, 'shippingPackages'));
 		add_action('woocommerce_checkout_update_order_review', array($this, 'updateOrderReview'));
 		add_action('woocommerce_checkout_update_order_meta', array($this, 'updateOrderMeta'));
 		add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
@@ -81,7 +87,8 @@ class Frontend
 		 * Change position of city field.
 		 */
 		add_filter('woocommerce_default_address_fields', array($this, 'changeCityFieldPosition'));
-	}
+
+    }
 
 	/**
 	 * Get DPD RO settings.
@@ -225,6 +232,16 @@ class Frontend
 				wp_localize_script('dpdro-script', 'dpdRoGeneral', $data);
 			}
 		}
+
+        $settings = $this->getSettings();
+        if ($settings['city_dropdown']&& (is_cart() || is_checkout() || is_wc_endpoint_url('edit-address'))) {
+            wp_enqueue_script('dpd-city-select', plugin_dir_url(__FILE__)  . '../assets/public/js/city-select.js', ['jquery', 'woocommerce'], $this->version, true);
+
+            wp_localize_script('dpd-city-select', 'ry_wc_city_select_params', [
+                'cities' => $this->getCities(),
+                'i18n_select_city_text' => esc_attr__('Select an option&hellip;', 'woocommerce'),
+            ]);
+        }
 	}
 
 	/**
@@ -344,7 +361,7 @@ class Frontend
 	}
 
 	/**
-	 * Add or remova tax payment gateway.
+	 * Add or removal tax payment gateway.
 	 */
 	public function checkoutTax()
 	{
@@ -422,6 +439,91 @@ class Frontend
 		if ($settings['county_before_city']) {
 			$fields['state']['priority'] = 61;
 		}
-		return $fields;
+        return $fields;
 	}
+
+    function getCities($cc = null)
+    {
+        global $wpdb;
+
+        switch (get_option('woocommerce_currency')) {
+            case 'RON';
+                $countryId = 642;
+                $countryCode = 'RO';
+                break;
+            case 'лв.':
+                $countryId = 100;
+                $countryCode = 'BG';
+                break;
+            case '€':
+                $countryId = 300;
+                $countryCode = 'GR';
+                break;
+            default:
+                $countryId = 642;
+                $countryCode = 'RO';
+        }
+
+
+        if (empty($this->cities)) {
+            $sql = "select * from ".$wpdb->prefix . "dpdro_cities where country_id = $countryId ";
+
+            $cities_ro = [];
+            $result =   $wpdb->get_results($sql );
+            foreach ($result as $item) {
+                $cities_ro[$item->postal_code] = $item;
+            }
+            $cities = [];
+            $allowed = array_merge(WC()->countries->get_allowed_countries(), WC()->countries->get_shipping_countries());
+            if ($allowed) {
+                foreach ($allowed as $code => $country) {
+                    if (file_exists(PLUGIN_DIR_DPDRO  . '/library/cities/' . $code . '.php')) {
+                        if ($code !== 'RO') {
+                            $cities = array_merge($cities, include(PLUGIN_DIR_DPDRO . '/library/cities/' . $code . '.php'));
+                        } else {
+                            $included_city = include(PLUGIN_DIR_DPDRO . '/library/cities/' . $code . '.php');
+                            $cleaned_ro_cities = [];
+                            foreach ($included_city['RO'] as $abbr => $_cities) {
+                                foreach ($_cities as $_city) {
+                                   if (isset($cities_ro[$_city[1]])) {
+                                       $cleaned_ro_cities['RO'][$abbr][] = [
+                                           $cities_ro[$_city[1]]->name, $_city[1]
+                                       ];
+                                       unset($cities_ro[$_city[1]]);
+                                   } else {
+                                       $cleaned_ro_cities['RO'][$abbr][] = $_city;
+                                   }
+                                }
+                            }
+                            if (count($cities_ro) > 0) {
+                                $states = array_flip(WC()->countries->get_states( 'RO' ));
+                                $address = new DataAddresses($wpdb);
+                                $newStates = [];
+                                foreach ($states as $name => $abbr) {
+                                    $name = strtoupper($address->removeDiactritics($name));
+                                    $newStates[$name] = $abbr;
+                                }
+
+                                foreach ($cities_ro as $code => $city) {
+                                    if (isset($newStates[$city->region])) {
+                                        $cities['RO'][$newStates[$city->region]][] = [$city->name, $code];
+                                    }
+                                }
+                            }
+                            $cities = array_merge($cities, $cleaned_ro_cities);
+                        }
+                    }
+                }
+            }
+            $this->cities = apply_filters('ry_wc_city_select_cities', $cities);
+        }
+
+        if (!is_null($cc)) {
+            return isset($this->cities[$cc]) ? $this->cities[$cc] : false;
+        } else {
+            return $this->cities;
+        }
+    }
+
+
 }

@@ -392,7 +392,7 @@ msgstr ""
 "utilizați valoarea prestabilită."
 
 #: includes/view/settings.php:639
-msgid "Show DPD RO box selection"
+msgid "Show DPD OOH network selection"
 msgstr "Afișați selecția DPD RO box"
 
 #: includes/view/settings.php:648

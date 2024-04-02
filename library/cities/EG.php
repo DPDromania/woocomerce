@@ -1,0 +1,196 @@
+<?php
+/**
+ * Arab Republic of Egypt places
+ *
+ * 
+ * 
+ * 
+ * 
+ */
+
+return [
+	'EG' => [
+	'BEGO' => [
+		_x('Markaz Abu Hummus', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Abu al Matamir', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Damanhur', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Hawsh `Isa', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Idku', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Itay al Barud', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Kafr ad Dawwar', 'BEGO', 'dpd-city-select'),
+		_x('Markaz Rashid', 'BEGO', 'dpd-city-select'),
+		_x('Markaz ad Dilinjat', 'BEGO', 'dpd-city-select'),
+		_x('Markaz al Mahmudiyah', 'BEGO', 'dpd-city-select'),
+		_x('Markaz ar Rahmaniyah', 'BEGO', 'dpd-city-select'),
+	],
+	'CAGO' => [
+		_x('Al Marj', 'CAGO', 'dpd-city-select'),
+		_x('Markaz al Khankah', 'CAGO', 'dpd-city-select'),
+		_x('Markaz as Saff', 'CAGO', 'dpd-city-select'),
+		_x('Mostafa El Serwy', 'CAGO', 'dpd-city-select'),
+	],
+	'DAGO' => [
+		_x('Markaz Fariskur', 'DAGO', 'dpd-city-select'),
+		_x('Markaz Kafr Sa`d', 'DAGO', 'dpd-city-select'),
+		_x('Markaz az Zarqa', 'DAGO', 'dpd-city-select'),
+	],
+	'ISGO' => [
+		_x('Markaz Fayid', 'ISGO', 'dpd-city-select'),
+		_x('Markaz al Isma`iliyah', 'ISGO', 'dpd-city-select'),
+		_x('Markaz al Qantarah Gharb', 'ISGO', 'dpd-city-select'),
+		_x('Markaz al Qantarah Sharq', 'ISGO', 'dpd-city-select'),
+	],
+	'KAASSH' => [
+		_x('Kafr El Sheikh', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Biyala', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Disuq', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Fuwwah', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Kafr ash Shaykh', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Mutubas', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Qallin', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz Sidi Salim', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz al Burullus', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz al Hamul', 'KAASSH', 'dpd-city-select'),
+		_x('Markaz ar Riyad', 'KAASSH', 'dpd-city-select'),
+	],
+	'MUAS' => [
+		_x('Markaz Aswan', 'MUAS', 'dpd-city-select'),
+		_x('Markaz Idfu', 'MUAS', 'dpd-city-select'),
+		_x('Markaz `Unaybah', 'MUAS', 'dpd-city-select'),
+	],
+	'MUAS2' => [
+		_x('Markaz Abu Tij', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz Asyut', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz Dayrut', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz al Badari', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz al Fath', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz al Ghanayim', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz al Qusiyah', 'MUAS2', 'dpd-city-select'),
+		_x('Markaz as Sahil', 'MUAS2', 'dpd-city-select'),
+	],
+	'MUBASU' => [
+		_x('Markaz Bani Suwayf', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz Biba', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz Bush', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz Ihnasiya al Madinah', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz Nasir', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz Sumusta al Waqf', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz al Fashn', 'MUBASU', 'dpd-city-select'),
+		_x('Markaz al Wasita', 'MUBASU', 'dpd-city-select'),
+	],
+	'MUMA' => [
+		_x('Markaz Matruh', 'MUMA', 'dpd-city-select'),
+	],
+	'MUQI' => [
+		_x('Markaz Abu Tisht', 'MUQI', 'dpd-city-select'),
+		_x('Markaz Armant', 'MUQI', 'dpd-city-select'),
+		_x('Markaz Dishna', 'MUQI', 'dpd-city-select'),
+		_x('Markaz Isna', 'MUQI', 'dpd-city-select'),
+		_x('Markaz Naj Hammadi', 'MUQI', 'dpd-city-select'),
+		_x('Markaz Qina', 'MUQI', 'dpd-city-select'),
+	],
+	'MUSHSI' => [
+		_x('Markaz Bir al `Abd', 'MUSHSI', 'dpd-city-select'),
+		_x('Markaz Rafah', 'MUSHSI', 'dpd-city-select'),
+		_x('Markaz al `Arish', 'MUSHSI', 'dpd-city-select'),
+		_x('Markaz ash Shaykh Zuwayd', 'MUSHSI', 'dpd-city-select'),
+	],
+	'MUSU' => [
+		_x('Markaz Akhmim', 'MUSU', 'dpd-city-select'),
+		_x('Markaz Awlad Tawq Sharq', 'MUSU', 'dpd-city-select'),
+		_x('Markaz Dar as Salam', 'MUSU', 'dpd-city-select'),
+		_x('Markaz Jirja', 'MUSU', 'dpd-city-select'),
+		_x('Markaz Juhaynah al Gharbiyah', 'MUSU', 'dpd-city-select'),
+		_x('Markaz Suhaj', 'MUSU', 'dpd-city-select'),
+		_x('Markaz al Balyana', 'MUSU', 'dpd-city-select'),
+		_x('Markaz al Maraghah', 'MUSU', 'dpd-city-select'),
+		_x('Markaz al Munshaah', 'MUSU', 'dpd-city-select'),
+	],
+	'MUDA' => [
+		_x('Bahr El Bakr', 'MUDA', 'dpd-city-select'),
+		_x('Markaz Aja', 'MUDA', 'dpd-city-select'),
+		_x('Markaz Bilqas', 'MUDA', 'dpd-city-select'),
+		_x('Markaz Dikirnis', 'MUDA', 'dpd-city-select'),
+		_x('Markaz Minyat An Nasr', 'MUDA', 'dpd-city-select'),
+		_x('Markaz Mit Ghamr', 'MUDA', 'dpd-city-select'),
+		_x('Markaz al Mansurah', 'MUDA', 'dpd-city-select'),
+		_x('Markaz al Manzilah', 'MUDA', 'dpd-city-select'),
+		_x('Mit Yazid', 'MUDA', 'dpd-city-select'),
+	],
+	'MUFA' => [
+		_x('Markaz Ibshaway', 'MUFA', 'dpd-city-select'),
+		_x('Markaz Itsa', 'MUFA', 'dpd-city-select'),
+		_x('Markaz Tamiyah', 'MUFA', 'dpd-city-select'),
+		_x('Markaz al Fayyum', 'MUFA', 'dpd-city-select'),
+	],
+	'MUGH' => [
+		_x('Markaz Basyun', 'MUGH', 'dpd-city-select'),
+		_x('Markaz Qutur', 'MUGH', 'dpd-city-select'),
+		_x('Markaz Sammanud', 'MUGH', 'dpd-city-select'),
+		_x('Markaz Tanta', 'MUGH', 'dpd-city-select'),
+		_x('Markaz Zifta', 'MUGH', 'dpd-city-select'),
+		_x('Markaz al Mahallah al Kubra', 'MUGH', 'dpd-city-select'),
+		_x('Markaz as Santah', 'MUGH', 'dpd-city-select'),
+	],
+	'MUIS' => [
+		_x('Al Muntazah', 'MUIS', 'dpd-city-select'),
+		_x('Markaz Maryut', 'MUIS', 'dpd-city-select'),
+	],
+	'MUJI' => [
+		_x('Markaz Awsim', 'MUJI', 'dpd-city-select'),
+		_x('Markaz Imbabah', 'MUJI', 'dpd-city-select'),
+		_x('Markaz al Badrashayn', 'MUJI', 'dpd-city-select'),
+		_x('Markaz al Jizah', 'MUJI', 'dpd-city-select'),
+		_x('Markaz al Wahat al Bahriyah', 'MUJI', 'dpd-city-select'),
+		_x('Markaz al `Ayyat', 'MUJI', 'dpd-city-select'),
+		_x('Walikale', 'MUJI', 'dpd-city-select'),
+	],
+	'MUMI' => [
+		_x('Markaz Ashmun', 'MUMI', 'dpd-city-select'),
+		_x('Markaz Birkat as Sab`', 'MUMI', 'dpd-city-select'),
+		_x('Markaz Quwaysina', 'MUMI', 'dpd-city-select'),
+		_x('Markaz al Bajur', 'MUMI', 'dpd-city-select'),
+		_x('Markaz ash Shuhada', 'MUMI', 'dpd-city-select'),
+	],
+	'MUMI2' => [
+		_x('Markaz Bani Mazar', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz Dayr Mawas', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz Mallawi', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz Matay', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz Qurqas', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz Samalut', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz al Minya', 'MUMI2', 'dpd-city-select'),
+		_x('Markaz al `Idwah', 'MUMI2', 'dpd-city-select'),
+	],
+	'MUQA' => [
+		_x('Markaz Banha', 'MUQA', 'dpd-city-select'),
+		_x('Markaz Kafr Shukr', 'MUQA', 'dpd-city-select'),
+		_x('Markaz Qalyub', 'MUQA', 'dpd-city-select'),
+		_x('Mostorod', 'MUQA', 'dpd-city-select'),
+	],
+	'MUUQ' => [
+		_x('Markaz al Uqsur', 'MUUQ', 'dpd-city-select'),
+	],
+	'MUWAJA' => [
+		_x('Baris Shurtah', 'MUWAJA', 'dpd-city-select'),
+		_x('Markaz al Wahat ad Dakhilah', 'MUWAJA', 'dpd-city-select'),
+		_x('Markaz al Wahat al Kharijah', 'MUWAJA', 'dpd-city-select'),
+		_x('Shurtah al-Farafirah', 'MUWAJA', 'dpd-city-select'),
+	],
+	'MUASSH' => [
+		_x('Bahr El Bakar', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Abu Hammad', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Abu Kabir', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Bilbays', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Diyarb Najm', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Hihya', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz Minya al Qamh', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz al Husayniyah', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz at Tall al Kabir', 'MUASSH', 'dpd-city-select'),
+		_x('Markaz az Zaqaziq', 'MUASSH', 'dpd-city-select'),
+	],
+	'SOSIGO' => [
+		_x('Markaz Atfih', 'SOSIGO', 'dpd-city-select'),
+	],
+	]
+];

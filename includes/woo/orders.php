@@ -67,7 +67,7 @@ class WooOrders
         /**
          * Stop editing. 
          */
-        $new_columns['order_actions'] = $columns['order_actions'];
+        //$new_columns['order_actions'] = $columns['order_actions'];
         return $new_columns;
     }
 
