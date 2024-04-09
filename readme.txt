@@ -29,6 +29,8 @@ For further information, contact us at api.support[at]dpd.ro !
 *   Import DPD Romania lockers
 *   Show AWB as PDF format
 *   Add new parcel in AWB
+*   Drop-down Romanian cities
+*   Show map network DPD Ro OOH (office, lockers, dpd shops) 
 
 
 == Installation ==

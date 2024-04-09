@@ -237,7 +237,7 @@ class Frontend
         if ($settings['city_dropdown']&& (is_cart() || is_checkout() || is_wc_endpoint_url('edit-address'))) {
             wp_enqueue_script('dpd-city-select', plugin_dir_url(__FILE__)  . '../assets/public/js/city-select.js', ['jquery', 'woocommerce'], $this->version, true);
 
-            wp_localize_script('dpd-city-select', 'ry_wc_city_select_params', [
+            wp_localize_script('dpd-city-select', 'dpd_wc_city_select_params', [
                 'cities' => $this->getCities(),
                 'i18n_select_city_text' => esc_attr__('Select an option&hellip;', 'woocommerce'),
             ]);
@@ -515,7 +515,7 @@ class Frontend
                     }
                 }
             }
-            $this->cities = apply_filters('ry_wc_city_select_cities', $cities);
+            $this->cities = apply_filters('dpd_wc_city_select_cities', $cities);
         }
 
         if (!is_null($cc)) {

@@ -49,7 +49,7 @@ class WooApi
 			foreach ($products as $item) {
 				$product = $item['data'];
 				$productWeight = $product->get_weight();
-				if (!$productWeight && $this->options['use_default_weight'] == '1') {
+				if (empty((float)$productWeight) && $this->options['use_default_weight'] == '1') {
 					$productWeight = $this->options['default_weight'];
 				}
 				$productQuantity = $item['quantity'];
@@ -73,7 +73,7 @@ class WooApi
 			foreach ($products as $item) {
 				$product = $item['data'];
 				$productWeight = $product->get_weight();
-				if (!$productWeight && $this->options['use_default_weight'] == '1') {
+				if (empty((float)$productWeight) && $this->options['use_default_weight'] == '1') {
 					$productWeight = $this->options['default_weight'];
 				}
 				$productQuantity = $item['quantity'];

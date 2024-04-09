@@ -1,10 +1,9 @@
+var dpd_city_dropdown = 1;
 jQuery(function ($) {
-    // ry_wc_city_select_params is required to continue, ensure the object exists
-    // wc_country_select_params is used for selectWoo texts. This one is added by WC
-    if (typeof wc_country_select_params === 'undefined' || typeof ry_wc_city_select_params === 'undefined') {
+    if (typeof wc_country_select_params === 'undefined' || typeof dpd_wc_city_select_params === 'undefined') {
         return false;
     }
-
+    
     // Select2 Enhancement if it exists
     if ($().selectWoo) {
         var getEnhancedSelectFormatString = function () {
@@ -89,12 +88,12 @@ jQuery(function ($) {
 
     $(document.body).on('state_changing', function (e, country, state, $container) {
         var $citybox = $container.find('#billing_city, #shipping_city, #calc_shipping_city');
-        console.log(state);
-        if (ry_wc_city_select_params.cities[country]) {
+
+        if (dpd_wc_city_select_params.cities[country]) {
             /* if the country has no states */
             if (state) {
-                if (ry_wc_city_select_params.cities[country][state]) {
-                    cityToSelect($citybox, ry_wc_city_select_params.cities[country][state]);
+                if (dpd_wc_city_select_params.cities[country][state]) {
+                    cityToSelect($citybox, dpd_wc_city_select_params.cities[country][state]);
                 } else {
                     cityToInput($citybox);
                 }
@@ -106,17 +105,7 @@ jQuery(function ($) {
         }
     });
 
-    $(document.body).on('change', 'select.city_select', function () {
-        var $container = $(this).closest('.form-row').parent(),
-            $city = $container.find('#billing_city, #shipping_city, #calc_shipping_city'),
-            postcode = $city.find(':selected').data('postcode');
 
-        if (postcode !== undefined) {
-            $container.find('#billing_postcode, #shipping_postcode, #calc_shipping_postcode').val(postcode);
-        } else {
-            $container.find('#billing_postcode, #shipping_postcode, #calc_shipping_postcode').val('');
-        }
-    });
 
     /* Ajax replaces .cart_totals (child of .cart-collaterals) on shipping calculator */
     if ($('.cart-collaterals').length && $('#calc_shipping_state').length) {
@@ -144,9 +133,8 @@ jQuery(function ($) {
         $citybox.parent().find('.select2-container').remove();
         $citybox.replaceWith($newcity);
 
-        $('#' + input_id).closest('.form-row').parent()
-            .find('#billing_postcode, #shipping_postcode, #calc_shipping_postcode')
-            .val('');
+
+
     }
 
     function disableCity($citybox) {
@@ -175,7 +163,7 @@ jQuery(function ($) {
 
         var $defaultOption = $('<option></option>')
             .attr('value', '')
-            .text(ry_wc_city_select_params.i18n_select_city_text);
+            .text(dpd_wc_city_select_params.i18n_select_city_text);
         $citybox.empty().append($defaultOption);
 
         for (var index in current_cities) {

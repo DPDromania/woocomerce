@@ -75,8 +75,11 @@
 
                     // Checkout steps
                     $.each(checkoutSteps, function (index, step) {
+
                         $('[name="' + step + '_country"]').val('RO');
-                        $('[name="' + step + '_city"]').val(office.address.siteName);
+                        if (typeof dpd_city_dropdown === 'undefined') {
+                            $('[name="' + step + '_city"]').val(office.address.siteName);
+                        }
                         $('[name="' + step + '_postcode"]').val(office.address.postCode);
                         $('[name="' + step + '_address_1"]').val(office.address.fullAddressString);
                         $('[name="' + step + '_pickup"]').val(office.id);
