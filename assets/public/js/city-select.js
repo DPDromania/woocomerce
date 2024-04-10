@@ -3,7 +3,7 @@ jQuery(function ($) {
     if (typeof wc_country_select_params === 'undefined' || typeof dpd_wc_city_select_params === 'undefined') {
         return false;
     }
-    
+
     // Select2 Enhancement if it exists
     if ($().selectWoo) {
         var getEnhancedSelectFormatString = function () {

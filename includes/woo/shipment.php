@@ -196,7 +196,7 @@ $settings = $dataSettings->getSettings();
         <?php if ($products && !empty($products)) : ?>
             <?php
 
-            $count = 1;
+            $count = 0;
             $parcelQuantity = 0;
             $parcelQuantityMax = (float) $settings['max_weight'];
             ?>
@@ -214,6 +214,11 @@ $settings = $dataSettings->getSettings();
                         <?php $parcelNoPalet = 1; $shipmentNode = '';?>
                         <?php foreach ($products as $product) : ?>
                             <?php
+                            if (($settings['packaging_method']  == 'all')) {
+                                $count++;
+                            } else {
+                                $count = 1;
+                            }
                             $productData = $product->get_data();
                             $productInfo = wc_get_product($productData['product_id']);
                             $productWeight = method_exists($productInfo, 'get_weight') ? $productInfo->get_weight() : 0;
@@ -225,9 +230,15 @@ $settings = $dataSettings->getSettings();
                             $productHeight =  method_exists($productInfo, 'get_height') ? $productInfo->get_height() : 0;
 
                             $shipmentNode .=  $productInfo->get_sku() . ' ';
-
+                            $incrementCount = false;
                             ?>
                             <?php for ($quantity = 0; $quantity < (int) $productQuantity; $quantity++) : ?>
+                                <?php
+                                    if ($incrementCount) {
+                                        $count++;
+                                    }
+                                    $incrementCount = true;
+                                ?>
                                 <tr class="js-d-modal-table-product" data-index="<?= $productData['id']; ?>">
                                     <td>
                                         <input name="id" type="hidden" value="<?= $productData['product_id']; ?>" />
@@ -262,7 +273,6 @@ $settings = $dataSettings->getSettings();
                                     if (($parcelQuantity + (float) $productWeight) <= $parcelQuantityMax) {
                                         $parcelQuantity = $parcelQuantity + (float) $productWeight;
                                     } else {
-                                        $count = $count + 1;
                                         $parcelQuantity = (float) $productWeight;
                                     }
                                     ?>

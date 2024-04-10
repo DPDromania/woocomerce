@@ -1243,6 +1243,7 @@ class WooOrder
             if ($params['products']) {
                 $parcels = [];
                 if ($orderShippingMethod == '2412' || $settings['packaging_method'] == 'all') {
+	                $params['products'] = $this->arrangeProducts($params['products']);
                     $index = 0;
                     $seqNo = 1;
                     foreach ($params['products'] as $product) {
@@ -2531,4 +2532,30 @@ class WooOrder
         }
         return false;
     }
+
+	private function arrangeProducts($products)
+	{
+		$return = [];
+		$lastParcel = 0;
+		usort($products, fn($a, $b) => $a['parcel'] <=> $b['parcel']);
+		$index = 0;
+		foreach ($products as $in => $product) {
+			if ($in == 0) {
+				$lastParcel = $product['parcel'];
+				$return[$index] = $product;
+				$index ++;
+				continue;
+			}
+
+			if ($lastParcel == $product['parcel']) {
+				$return[$index - 1]['weight'] += $product['weight'];
+				continue;
+			}
+
+			$return[$index] = $product;
+			$lastParcel = $product['parcel'];
+			$index ++;
+		}
+		return $return;
+	}
 }
