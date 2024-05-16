@@ -122,7 +122,7 @@ class Frontend
 							<input type="hidden" class="js-dpdro-offices-type" name="billing_pickup_type" id="billing_pickup_type" value="' . $pickupType  . '" />
 							<input type="text" class="input-text js-dpdro-offices-name" name="billing_pickup_name" id="" placeholder="' . __('No office selected') . '" value="' . $pickupName  . '" disabled />
 						</span>
-						<iframe style="margin-top: 10px;" id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v2/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px" ></iframe>
+						<iframe style="margin-top: 10px;" id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px" ></iframe>
 					</p>
 				';
 			}

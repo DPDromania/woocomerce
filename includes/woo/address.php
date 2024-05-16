@@ -157,7 +157,7 @@ $settings = $dataSettings->getSettings();
                                     $('.js-d-modal-validate').find('input[name="address_postcode"]').val(params.postcode);
                                 }
                                 if (params.siteId && params.siteId != '') {
-                                    var officeMap = 'https://services.dpd.ro/office_locator_widget_v2/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&siteID=' + params.siteId + '&selectOfficeButtonCaption=Select this office';
+                                    var officeMap = 'https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&siteID=' + params.siteId + '&selectOfficeButtonCaption=Select this office';
                                     if ($('#frameOfficeLocator').length) {
                                         $('#frameOfficeLocator').attr('src', officeMap);
                                     }
@@ -285,7 +285,7 @@ $settings = $dataSettings->getSettings();
                         <input type="text" name="office_name" value="<?= $orderAddress->office_name; ?>" disabled />
                     </div>
                 </div>
-                <iframe id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v2/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px"></iframe>
+                <iframe id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px"></iframe>
             </div>
         <?php else : ?>
             <input type="hidden" name="address" value="<?= $orderAddress->address; ?>" />

@@ -58,7 +58,7 @@ $settings = $dataSettings->getSettings();
                     <input type="text" name="office_name" value="<?= $orderAddress->office_name; ?>" disabled />
                 </div>
             </div>
-            <iframe id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v2/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px"></iframe>
+            <iframe id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px"></iframe>
         </div>
     </div>
 </div>

@@ -8,6 +8,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+
+require plugin_dir_path(__FILE__) . '../../library/dpdutil.php';
+
 class WooOrder
 {
     /**
@@ -190,6 +193,8 @@ class WooOrder
                             if ($officeData && !empty($officeData)) {
                                 $officeId = $officeData->office_id;
                                 $officeName = $officeData->office_name;
+                            } else {
+	                            $officeId = $officePickup;
                             }
                         }
 
@@ -216,7 +221,7 @@ class WooOrder
                         /** 
                          * Insert order data to database.
                          */
-                        if ($order->get_shipping_country() == 'RO' || $order->get_shipping_country() == 'BG') {
+	                    if (in_array($order->get_shipping_country(), DPDUtil::getAllowedCountryCodes(), true)) {
                             $this->insertOrderAddress($orderData);
                         }
 
@@ -360,7 +365,7 @@ class WooOrder
                     /** 
                      * Insert order data to database.
                      */
-                    if ($countryId == 'RO' || $countryId == 'BG') {
+	                if (in_array($order->get_shipping_country(), DPDUtil::getAllowedCountryCodes(), true)) {
                         $this->insertOrderAddress($orderData);
                     }
 
@@ -686,29 +691,20 @@ class WooOrder
     {
         if ($all) {
             if ($code) {
-                if (
-                    $code === 'RO' || // Romania  -> ID WOO
-                    $code === 'BG' || // Bulgaria -> ID WOO
-                    $code === 'GR' || // Grecia   -> ID WOO
-                    $code === 'HU' || // Ungaria  -> ID WOO
-                    $code === 'SK' || // Slovakia -> ID WOO
-                    $code === 'PL'    // Polonia  -> ID WOO
-                ) {
-                    return true;
+
+                if (in_array($code, DPDUtil::getAllowedCountryCodes(), true)) {
+				    return true;
                 } else {
                     return false;
                 }
             }
         } else {
             if ($code) {
-                if (
-                    $code === 'RO' || // Romania  -> ID WOO
-                    $code === 'BG'    // Bulgaria -> ID WOO
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
+	            if (in_array($code, DPDUtil::getAllowedCountryCodes(), true)) {
+		            return true;
+	            } else {
+		            return false;
+	            }
             }
         }
         return false;
@@ -2043,7 +2039,7 @@ class WooOrder
                 $address .= $params['apartment'] != '' ? ', ap. ' . $params['apartment'] : '';
                 $orderData['address'] = $address;
             }
-            if ($params['country'] == 'RO' || $params['country'] == 'BG') {
+	        if (in_array($order->get_shipping_country(), DPDUtil::getAllowedCountryCodes(), true)) {
                 $this->insertOrderAddress($orderData);
             }
 

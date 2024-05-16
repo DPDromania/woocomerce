@@ -185,7 +185,7 @@ class LibraryApi
 			'api'    => 'calculate',
 			'method' => 'POST',
 			'data'   => [
-				'service' => [
+					'service' => [
 					'serviceIds'           => array($serviceId),
 					'autoAdjustPickupDate' => true,
 				],
@@ -228,8 +228,9 @@ class LibraryApi
 		/** 
 		 * Address.
 		 */
+		$allowedCountryIds = [100, 300, 348, 616, 703, 705, 203, 191, 40, 380, 276, 724, 250, 528, 56, 208, 233, 442, 428, 440, 246, 620, 752, 642];
 		$country = $this->countryByID($options['package']['country']);
-		if (isset($country) && !empty($country) && ($country['id'] == 642) || $country['id'] == 100) {
+		if (isset($country) && !empty($country) && in_array((int)$country['id'], $allowedCountryIds, true)) {
 			if ($options['client_contracts'] != '' && $options['client_contracts'] != '0') {
 				$parameters['data']['sender']['clientId'] = $options['client_contracts'];
 			}
@@ -557,11 +558,8 @@ class LibraryApi
 		/** 
 		 * Parameters.
 		 */
-		if ($country === 'RO') {
-			$countryId = 642;
-		} else {
-			$countryId = 100;
-		}
+
+		$countryId = DPDUtil::getCountryId($country);
 		$parameters = [
 			'api' => 'location/street',
 			'method' => 'POST',
@@ -636,4 +634,6 @@ class LibraryApi
 		$response = $this->request($parameters, false);
 		return $response;
 	}
+
+
 }

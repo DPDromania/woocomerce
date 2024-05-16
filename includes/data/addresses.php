@@ -56,7 +56,12 @@ class DataAddresses
                 $countryAddress = $country;
         }
         $city = strtoupper($this->removeDiactritics($city));
-        $region = strtoupper($this->removeDiactritics(WC()->countries->get_states($countryID)[$state]));
+		$states = WC()->countries->get_states($countryID);
+		$region = '';
+		if (is_array($states) && isset($states[$state])) {
+			$region = strtoupper ($this->removeDiactritics($states[$state]));
+		}
+
         $response = $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM {$this->name} WHERE `country_id` = %s AND `region` = %s AND `name` = %s", $countryAddress, $region, $city));
         return $response;
     }
