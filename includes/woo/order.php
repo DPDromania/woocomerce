@@ -1423,7 +1423,19 @@ class WooOrder
              * Address
              */
             $addressData = $this->getOrderAddress($params['orderId']);
-            if ($addressData && $this->checkCountry($order->get_shipping_country())) {
+            if (
+				$addressData &&
+				$this->checkCountry($order->get_shipping_country()) &&
+				(
+					$addressData->status &&
+					!empty($addressData->status) &&
+					$addressData->status == 'skip' &&
+					(
+						$order->get_shipping_country() == 'RO' ||
+						$order->get_shipping_country() == 'BG'
+					)
+				)
+            ) {
                 if ($addressData->method && $addressData->method === 'pickup') {
 
                     /**

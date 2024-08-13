@@ -169,6 +169,7 @@ class LibraryApi
 				return unserialize($content);
 			}
 		}
+		$log = $dir . DIRECTORY_SEPARATOR . '000_cache_log';
 		file_put_contents($log, date('Y-m-d H:i:s') . "\t" . 'missed: ' . "\t" .  $key . "\n", FILE_APPEND);
 		return false;
 	}
