@@ -43,12 +43,12 @@ $settings = $dataSettings->getSettings();
     <?php endif; ?>
 
     <!-- Error. -->
-    <?php if ($errorMessage && !empty($errorMessage)) : ?>
+    <?php if (isset($errorMessage) && $errorMessage && !empty($errorMessage)) : ?>
         <h5 class="d-response d-error"><?= $errorMessage; ?></h5>
     <?php endif; ?>
 
     <!-- Success. -->
-    <?php if ($successMessage && !empty($successMessage)) : ?>
+    <?php if (isset($successMessage) && $successMessage && !empty($successMessage)) : ?>
         <h5 class="d-response d-success"><?= $successMessage; ?></h5>
     <?php endif; ?>
 

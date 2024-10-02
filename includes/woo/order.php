@@ -1381,6 +1381,13 @@ class WooOrder
                             /** 
                              * Recipient pay the tax
                              */
+	                        $orderCodFee = 0;
+	                        foreach ($order->get_fees() as $orderFee) {
+		                        if ($orderFee->get_name() == 'Cash on delivery DPD RO' || $orderFee->get_name() == 'Comision ramburs DPD RO') {
+			                        $orderCodFee = (float) $orderFee->get_total();
+		                        }
+	                        }
+	                        $totalCod =  number_format((float) ($order->get_total() -  $order->get_shipping_total() - $orderCodFee), 2, '.', '');
                         } else {
                             //$requestData['service']['additionalServices']['cod']['includeShippingPrice'] = true;
                         }
@@ -1429,7 +1436,7 @@ class WooOrder
 				(
 					$addressData->status &&
 					!empty($addressData->status) &&
-					$addressData->status == 'skip' &&
+					($addressData->status == 'skip' || $addressData->status == 'validated') &&
 					(
 						$order->get_shipping_country() == 'RO' ||
 						$order->get_shipping_country() == 'BG'
