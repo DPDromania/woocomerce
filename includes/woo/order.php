@@ -1436,7 +1436,11 @@ class WooOrder
 				(
 					$addressData->status &&
 					!empty($addressData->status) &&
-					($addressData->status == 'skip' || $addressData->status == 'validated') &&
+					(
+						$addressData->status == 'skip' ||
+						$addressData->status == 'validated' ||
+						($addressData->method === 'pickup'&& $addressData->status == 'unset' )
+					) &&
 					(
 						$order->get_shipping_country() == 'RO' ||
 						$order->get_shipping_country() == 'BG'
@@ -1493,25 +1497,34 @@ class WooOrder
                     }
                 }
             } else {
-                $countryData = $libraryApi->countryByID($order->get_shipping_country());
-                if ($countryData) {
-                    $requestData['recipient']['address']['countryId'] = $countryData['id'];
-                }
-                if ($order->get_shipping_city()) {
-                    $requestData['recipient']['address']['siteName'] = $this->removeDiactritics($order->get_shipping_city());
-                }
-                if (strlen($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2()) > 34) {
-                    $orderAddressLength = strlen($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2());
-                    $addressLine1 = substr($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 0, 34);
-                    $addressLine2 = substr($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 34, $orderAddressLength);
-                    $requestData['recipient']['address']['addressLine1'] = $this->removeDiactritics($addressLine1);
-                    $requestData['recipient']['address']['addressLine2'] = $this->removeDiactritics($addressLine2);
-                } else {
-                    $requestData['recipient']['address']['addressLine1'] = $this->removeDiactritics($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2());
-                }
-                if ($order->get_shipping_postcode() && !empty($order->get_shipping_postcode())) {
-                    $requestData['recipient']['address']['postCode'] = trim($order->get_shipping_postcode());
-                }
+
+	            if ($addressData->method && $addressData->method === 'pickup') {
+
+		            /**
+		             * Address pickup
+		             */
+		            $requestData['recipient']['pickupOfficeId'] = (int) $addressData->office_id;
+	            } else {
+		            $countryData = $libraryApi->countryByID( $order->get_shipping_country() );
+		            if ( $countryData ) {
+			            $requestData['recipient']['address']['countryId'] = $countryData['id'];
+		            }
+		            if ( $order->get_shipping_city() ) {
+			            $requestData['recipient']['address']['siteName'] = $this->removeDiactritics( $order->get_shipping_city() );
+		            }
+		            if ( strlen( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() ) > 34 ) {
+			            $orderAddressLength                                  = strlen( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() );
+			            $addressLine1                                        = substr( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 0, 34 );
+			            $addressLine2                                        = substr( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 34, $orderAddressLength );
+			            $requestData['recipient']['address']['addressLine1'] = $this->removeDiactritics( $addressLine1 );
+			            $requestData['recipient']['address']['addressLine2'] = $this->removeDiactritics( $addressLine2 );
+		            } else {
+			            $requestData['recipient']['address']['addressLine1'] = $this->removeDiactritics( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() );
+		            }
+		            if ( $order->get_shipping_postcode() && ! empty( $order->get_shipping_postcode() ) ) {
+			            $requestData['recipient']['address']['postCode'] = trim( $order->get_shipping_postcode() );
+		            }
+	            }
             }
 
             /**

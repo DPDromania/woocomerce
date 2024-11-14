@@ -162,6 +162,7 @@ class DPDRO_Service_Gateway_2005 extends WC_Shipping_Method
             /** 
              * Library api.
              */
+	        $taxServiceRate = 'no';
             $dpdApi = new LibraryApi($dataSettings['username'], $dataSettings['password']);
             $serviceTax = $dpdApi->calculate($this->serviceId, $dataSettings, $addresses);
             if ($serviceTax && !isset($serviceTax['error'])) {
@@ -169,11 +170,12 @@ class DPDRO_Service_Gateway_2005 extends WC_Shipping_Method
                 if ($this->checkCountry($package['destination']['country'])) {
                     if ($dataSettings['cod'] && DataZones::checkCustomPayment($package, $settings)) {
                         $taxService = $taxService - (float) $dataSettings['payment_tax'];
+	                    $taxServiceRate = 'yes';
                     }
                 }
-                $taxServiceRate = 'no';
+                //$taxServiceRate = 'no';
                 if ($dataSettings['courier_service_payer'] == 'RECIPIENT') {
-
+	                $taxServiceRate = 'no';
                     /** 
                      * Recipient pay the tax.
                      */
