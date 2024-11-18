@@ -127,7 +127,10 @@ $settings = $dataSettings->getSettings();
              * Payment.
              */
             $settings['cod'] = false;
-            if (isset($settings['payment_status']) && $settings['chosen_payment'] === 'cod') {
+            if (
+                    // isset($settings['payment_status']) &&
+                    $settings['chosen_payment'] === 'cod'
+            ) {
 
                 /** 
                  * Data zones.
@@ -209,16 +212,18 @@ $settings = $dataSettings->getSettings();
                      * Calculate.
                      */
                     $serviceTax = $libraryApi->calculate($shippingMethodCode, $settings, $addresses);
+	                $taxServiceRate = 'no';
                     if ($serviceTax && !isset($serviceTax['error'])) {
                         $taxService = (float) $serviceTax['price']['total'];
                         if ($checkCountry) {
                             if ($settings['cod'] && DataZones::checkCustomPayment($settingsCOD, $dataSettings)) {
                                 $taxService = $taxService - (float) $settings['payment_tax'];
+	                            $taxServiceRate = 'yes';
                             }
                         }
-                        $taxServiceRate = 'no';
-                        if ($settings['courier_service_payer'] == 'RECIPIENT') {
 
+                        if ($settings['courier_service_payer'] == 'RECIPIENT') {
+	                        $taxServiceRate = 'no';
                             /** 
                              * Recipient pay the tax.
                              */

@@ -1377,7 +1377,10 @@ class WooOrder
                             $totalCod = number_format((float) $order->get_total(), 2, '.', '');
                         }
                     } else {
-                        if ($orderSettings->courier_service === 'RECIPIENT' || $orderSettings->include_shipping === 'no' || !$orderSettings->include_shipping) {
+                        if (
+							$orderSettings->courier_service === 'RECIPIENT' ||
+							$orderSettings->include_shipping === 'no' ||
+							!$orderSettings->include_shipping) {
                             /** 
                              * Recipient pay the tax
                              */
@@ -2071,6 +2074,8 @@ class WooOrder
                 $address .= $params['apartment'] != '' ? ', ap. ' . $params['apartment'] : '';
                 $orderData['address'] = $address;
             }
+
+	        $order = wc_get_order($params['orderId']);
 	        if (in_array($order->get_shipping_country(), DPDUtil::getAllowedCountryCodes(), true)) {
                 $this->insertOrderAddress($orderData);
             }
@@ -2081,7 +2086,7 @@ class WooOrder
              */
             $orderSettings = $this->getOrderSettings($params['orderId']);
             if (!$orderSettings && empty($orderSettings)) {
-                $order = wc_get_order($params['orderId']);
+
                 $orderSettings = [
                     'order_id'          => $orderData['order_id'],
                     'shipping_tax'      => 'no',
