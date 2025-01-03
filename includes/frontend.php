@@ -471,6 +471,9 @@ class Frontend
             $cities_ro = [];
             $result =   $wpdb->get_results($sql );
             foreach ($result as $item) {
+				if ($item->postal_code == '510002' && $item->name == 'ALBA IULIA') {
+					$item->postal_code = '510150';
+				}
                 $cities_ro[$item->postal_code] = $item;
             }
             $cities = [];
