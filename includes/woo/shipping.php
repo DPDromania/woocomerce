@@ -177,6 +177,7 @@ $settings = $dataSettings->getSettings();
                         }
                     } else {
                         $groupsWeight = [];
+	                    $groupedDimensions = [];
                         sort($productsData);
                         if ($productsData && is_array($productsData)  && !empty($productsData)) {
                             $count = 0;
@@ -184,6 +185,25 @@ $settings = $dataSettings->getSettings();
                                 if (!isset($groupsWeight[$count])) {
                                     $groupsWeight[$count] = 0;
                                 }
+
+	                            if (!isset($groupedDimensions[$count])) {
+		                            $groupedDimensions[$count]['width'] = (float) $productShipping['width'];
+		                            $groupedDimensions[$count]['depth'] = (float) $productShipping['depth'];
+		                            $groupedDimensions[$count]['height'] = (float) $productShipping['height'];
+	                            } else {
+		                            if ( (float) $productShipping['width'] > $groupedDimensions[$count]['width'] ) {
+			                            $groupedDimensions[$count]['width'] = (float) $productShipping['width'];
+		                            }
+
+		                            if ( (float) $productShipping['depth'] > $groupedDimensions[$count]['depth'] ) {
+			                            $groupedDimensions[$count]['depth'] = (float) $productShipping['depth'];
+		                            }
+
+		                            if ( (float) $productShipping['height'] > $groupedDimensions[$count]['height'] ) {
+			                            $groupedDimensions[$count]['height'] = (float) $productShipping['height'];
+		                            }
+	                            }
+
                                 if ($groupsWeight[$count] + (float) $productShipping['weight'] > (float) $this->options['max_weight']) {
                                     $count++;
                                     $groupsWeight[$count] = (float) $productShipping['weight'];
@@ -200,6 +220,7 @@ $settings = $dataSettings->getSettings();
                                     $settings['parcels'][$index] = [
                                         'seqNo'  => (int) $seqNo,
                                         'weight' => (float) $weight,
+                                        'size' => $groupedDimensions[$index]
                                     ];
                                     $index++;
                                     $seqNo++;

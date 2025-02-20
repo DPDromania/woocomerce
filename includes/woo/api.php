@@ -89,7 +89,7 @@ class WooApi
 			}
 		}
 		$parcels = [];
-		if ($serviceId == '2412' || $packagingMethod = 'all') {
+		if ($serviceId != 2303  && ($serviceId == '2412' || $packagingMethod == 'all')) {
 			$index = 0;
 			$seqNo = 1;
 			foreach ($productsShipping as $product) {
@@ -109,6 +109,7 @@ class WooApi
 			}
 		} else {
 			$groupsWeight = [];
+			$groupedDimensions = [];
 			sort($productsShipping);
 			if ($productsShipping && is_array($productsShipping)  && !empty($productsShipping)) {
 				$count = 0;
@@ -116,6 +117,25 @@ class WooApi
 					if (!isset($groupsWeight[$count])) {
 						$groupsWeight[$count] = 0;
 					}
+
+					if (!isset($groupedDimensions[$count])) {
+						$groupedDimensions[$count]['width'] = (float) $productShipping['width'];
+						$groupedDimensions[$count]['depth'] = (float) $productShipping['depth'];
+						$groupedDimensions[$count]['height'] = (float) $productShipping['height'];
+					} else {
+						if ( (float) $productShipping['width'] > $groupedDimensions[$count]['width'] ) {
+							$groupedDimensions[$count]['width'] = (float) $productShipping['width'];
+						}
+
+						if ( (float) $productShipping['depth'] > $groupedDimensions[$count]['depth'] ) {
+							$groupedDimensions[$count]['depth'] = (float) $productShipping['depth'];
+						}
+
+						if ( (float) $productShipping['height'] > $groupedDimensions[$count]['height'] ) {
+							$groupedDimensions[$count]['height'] = (float) $productShipping['height'];
+						}
+					}
+
 					if ($groupsWeight[$count] + (float) $productShipping['weight'] > (float) $this->options['max_weight']) {
 						$count++;
 						$groupsWeight[$count] = (float) $productShipping['weight'];
@@ -132,6 +152,7 @@ class WooApi
 						$parcels[$index] = [
 							'seqNo'  => (int) $seqNo,
 							'weight' => (float) $weight,
+							'size' => $groupedDimensions[$index]
 						];
 						$index++;
 						$seqNo++;

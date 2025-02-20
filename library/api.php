@@ -226,6 +226,13 @@ class LibraryApi
             $parameters['data']['content']['parcels'] = $options['parcels'];
         }
 
+		if (count($options['parcels']) == 1 || $options['packaging_method'] == 'one') {
+			$parameters['data']['content']['parcelsCount'] = count($options['parcels']);
+			$parameters['data']['content']['parcels'] = $options['parcels'];
+		}
+
+
+
 		/** 
 		 * Address.
 		 */

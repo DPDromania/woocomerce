@@ -1256,6 +1256,9 @@ class WooOrder
                         $seqNo++;
                     }
                 } else {
+					$width = 0;
+					$height = 0;
+					$depth = 0;
                     foreach ($params['products'] as $product) {
                         if (is_array($parcels) && !empty($parcels) && array_key_exists($product['parcel'], $parcels)) {
                             $parcelWeight = floatval($parcels[$product['parcel']]);
@@ -1263,11 +1266,27 @@ class WooOrder
                             $parcelWeight = 0;
                         }
                         $parcels[$product['parcel']] = $parcelWeight + floatval($product['weight']);
+						if ($product['width'] > $width) {
+							$width = $product['width'];
+						}
+
+	                    if ($product['height'] > $height) {
+		                    $height = $product['height'];
+	                    }
+
+	                    if ($product['depth'] > $depth) {
+		                    $depth = $product['depth'];
+	                    }
                     }
                     foreach ($parcels as $key => $parcel) {
                         $productParcel = [
                             'seqNo' => (int) $key,
-                            'weight' => floatval($parcel)
+                            'weight' => floatval($parcel),
+                            'size'   => [
+	                            'width' => (float) $width,
+	                            'depth' => (float) $depth,
+	                            'height' => (float) $height,
+                            ],
                         ];
                         array_push($requestData['content']['parcels'], $productParcel);
                     }
