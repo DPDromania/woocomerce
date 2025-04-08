@@ -7,7 +7,7 @@
  * 		Requires PHP min: 7.0
  * 		Requires Wordpress min: 5.0
  * 		Requires Woocommerce min: 3.9		
- * Version: 3.2.24
+ * Version: 3.2.25
  * Author: DPD-RO
  * Author URI: https://www.dpd.com/ro/ro/
  * Text Domain: dpdro
@@ -17,7 +17,7 @@
  * Requires Woocommerce: 3.9
  */
 
-define('DPDRO_VERSION',  '3.2.24');
+define('DPDRO_VERSION',  '3.2.25');
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {

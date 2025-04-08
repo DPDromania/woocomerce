@@ -140,7 +140,7 @@ class DPDRO_Service_Gateway_2212 extends WC_Shipping_Method
              */
             $wooApi = new WooApi($wpdb, $package, $dataSettings);
             $dataSettings['total_weight'] = $wooApi->totalWeight();
-            $dataSettings['parcels'] = $wooApi->prepareParcels($this->serviceId, $dataSettings['packaging_method']);
+            $dataSettings['parcels'] = $wooApi->prepareParcels($this->serviceId, $dataSettings['packaging_method'], $package['destination']['country']);
 
             /** 
              * Payment.
@@ -163,6 +163,11 @@ class DPDRO_Service_Gateway_2212 extends WC_Shipping_Method
              * Library api.
              */
             $dpdApi = new LibraryApi($dataSettings['username'], $dataSettings['password']);
+
+			if ($dataSettings['package']['country'] == 'PL') {
+				$dataSettings['package']['postcode'] = str_replace('-', '', $dataSettings['package']['postcode']);
+			}
+
             $serviceTax = $dpdApi->calculate($this->serviceId, $dataSettings, $addresses);
 	        $taxServiceRate = 'no';
             if ($serviceTax && !isset($serviceTax['error'])) {

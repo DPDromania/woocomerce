@@ -39,7 +39,7 @@ class WooOrder
         $this->tableOrderSettings = $this->wpdb->prefix . 'order_dpd_settings';
         $this->tableOrderShipment = $this->wpdb->prefix . 'order_dpd_shipment';
         $this->tableRequesteCourier = $this->wpdb->prefix . 'order_dpd_courier';
-        $this->tableTaxRates = $this->wpdb->prefix . 'order_dpd_tax_rates';
+        $this->tableTaxRates = $this->wpdb->prefix . '';
         $this->tableTaxRatesOffices = $this->wpdb->prefix . 'order_dpd_tax_rates_offices';
         $this->tableOtherMethod = $this->wpdb->prefix . 'order_dpd_other_method';
         $this->init();
@@ -1238,7 +1238,13 @@ class WooOrder
              */
             if ($params['products']) {
                 $parcels = [];
-                if ($orderShippingMethod == '2412' || $settings['packaging_method'] == 'all') {
+                if (
+					($orderShippingMethod == '2412' || $settings['packaging_method'] == 'all') &&
+					(
+						$orderShippingMethod == 2212 &&
+						($order->get_shipping_country() == 'HU' || $order->get_shipping_country() == 'BG')
+					)
+                ) {
 	                $params['products'] = $this->arrangeProducts($params['products']);
                     $index = 0;
                     $seqNo = 1;
@@ -1486,6 +1492,9 @@ class WooOrder
                         if (array_key_exists('postCodeFormats', $countryData) && !empty($countryData['postCodeFormats']) && is_array($countryData['postCodeFormats'])) {
                             if ($order->get_shipping_postcode() && !empty($order->get_shipping_postcode())) {
                                 $requestData['recipient']['address']['postCode'] = trim($order->get_shipping_postcode());
+								if ($countryData['isoAlpha2'] == 'PL') {
+									$requestData['recipient']['address']['postCode'] = str_replace('-', '', $order->get_shipping_postcode());
+								}
                             }
                         }
                     }
@@ -1545,6 +1554,9 @@ class WooOrder
 		            }
 		            if ( $order->get_shipping_postcode() && ! empty( $order->get_shipping_postcode() ) ) {
 			            $requestData['recipient']['address']['postCode'] = trim( $order->get_shipping_postcode() );
+			            if ($countryData['isoAlpha2'] == 'PL') {
+				            $requestData['recipient']['address']['postCode'] = str_replace('-', '', $order->get_shipping_postcode());
+						}
 		            }
 	            }
             }
