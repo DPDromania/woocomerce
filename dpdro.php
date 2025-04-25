@@ -7,7 +7,7 @@
  * 		Requires PHP min: 7.0
  * 		Requires Wordpress min: 5.0
  * 		Requires Woocommerce min: 3.9		
- * Version: 3.2.25
+ * Version: 3.2.27
  * Author: DPD-RO
  * Author URI: https://www.dpd.com/ro/ro/
  * Text Domain: dpdro
@@ -17,7 +17,7 @@
  * Requires Woocommerce: 3.9
  */
 
-define('DPDRO_VERSION',  '3.2.25');
+define('DPDRO_VERSION',  '3.2.27');
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -42,9 +42,9 @@ if (!function_exists('dpdRoUpdateChecker')) {
 	require plugin_dir_path(__FILE__) . 'plugin-update-checker/plugin-update-checker.php';
 	function dpdRoUpdateChecker()
 	{
-		$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/silviuploscariu/DPD-Woocommerce', __FILE__, 'DPD RO Shipping / Payment');
+		$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/DPDromania/woocomerce', __FILE__, 'DPD RO Shipping / Payment');
 		$myUpdateChecker->setBranch('master');
-		$myUpdateChecker->setAuthentication('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');
+		//$myUpdateChecker->se8tAuthentication('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');
 	}
 	dpdRoUpdateChecker();
 }

@@ -35,6 +35,13 @@ class Frontend
     /** @var  */
     private $cities;
 
+	private $zones;
+
+
+	private $zoneId;
+
+	private $apply;
+
 
 	/**
 	 * Constructor.
@@ -295,6 +302,15 @@ class Frontend
 			}
 		}
 		return false;
+	}
+
+	function applyTax($value)
+	{
+		if ( get_option( 'woocommerce_prices_include_tax') != 'no') {
+			return $value;
+		}
+
+		$taxes = $this->getTaxByZone();
 	}
 
 	/**
