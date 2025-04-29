@@ -323,7 +323,12 @@ class Frontend
 		}
 		if ($this->checkCountry(WC()->customer->get_shipping_country())) {
 			$chosenGateway = WC()->session->get('chosen_shipping_methods');
-			if (strpos($chosenGateway[0], 'shipping_dpd') !== false || strpos($chosenGateway[0], 'dpdro_shipping') !== false) {
+			if (
+				isset($chosenGateway[0]) &&
+				(
+					strpos($chosenGateway[0], 'shipping_dpd') !== false ||
+					strpos($chosenGateway[0], 'dpdro_shipping') !== false)
+			) {
 				$zoneId = $this->getZoneId();
 				if ($zoneId || $zoneId == 0) {
 					$paymentZones = $this->getZones();
