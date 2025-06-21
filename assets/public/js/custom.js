@@ -16,7 +16,7 @@
             });
             $(document).on('change', '[name="' + step + '_state"]', function () {
                 $('[name="' + step + '_city"]').val(null);
-                $('[name="' + step + '_postcode"]').val(null);
+                $('[name="' + step + '_postcode"]').val(null); console.log('aici se sterge postcode-ul');
                 $('[name="' + step + '_pickup"]').val(null).trigger('change');
                 $('.js-dpdro-offices-name').val(dpdRoGeneral.textNoOfficeSelected);
                 $('body').trigger('update_checkout');
@@ -76,8 +76,6 @@
     {
 
         $countryId = getCountryId($('[name="' + step + '_country"]').val());
-        console.log('reloading widget:' + $countryId);
-
         $.ajax({
             url: dpdRo.ajaxurl,
             data: {
@@ -91,11 +89,11 @@
             dataType: 'json',
             type: 'POST',
             success: function (response) {
-                console.log('success');
-                console.log(response);
-                if (response.length > 0 && response[0].postcode != '') {
+                if (response.length > 0 && response[0].postcode != '' && response[0].postcode != null) {
+                    console.log('Postcode de la widget', response[0].postcode);
                     $('[name="' + step + '_postcode"]').val(response[0].postcode);
                 }
+                console.log("widget response", response);
                 if (response.length > 0 && response[0].siteId != '') {
                     var officeMap = 'https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&siteID=' + response[0].siteId + '&selectOfficeButtonCaption=Select this office' + '&countryId=' + $countryId;
 

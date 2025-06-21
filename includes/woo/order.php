@@ -811,10 +811,13 @@ class WooOrder
     /** 
      * Update order address stored by order id after validation.
      */
-    public function updateOrderAddressValidated($data)
+    public function updateOrderAddressValidated($data, $streetFound)
     {
         $orderId = $data['orderId'];
         $streetId = $data['streetId'];
+		if ($streetFound === false) {
+			$streetId = "STREET-NOT-FOUND:" . $data['streetName'];
+		}
         $streetType = $data['streetType'];
         $streetName = $data['streetName'];
         $streetNumber = $data['number'];
@@ -1509,7 +1512,12 @@ class WooOrder
                         $requestData['recipient']['address']['addressNote'] = $this->removeDiactritics($order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2());
                     } else {
                         if (isset($addressData->address_street_id) &&  !empty($addressData->address_street_id)) {
-                            $requestData['recipient']['address']['streetId'] = $addressData->address_street_id;
+							if (strpos( $addressData->address_street_id, "STREET-NOT-FOUND:") === false) {
+								$requestData['recipient']['address']['streetId'] = $addressData->address_street_id;
+							} else {
+								$requestData['recipient']['address']['streetName'] = str_replace("STREET-NOT-FOUND:", "", $addressData->address_street_id);
+							}
+
                         } else {
                             if (isset($addressData->address_street_type) &&  !empty($addressData->address_street_type)) {
                                 $requestData['recipient']['address']['streetType'] = $addressData->address_street_type;
@@ -1825,17 +1833,29 @@ class WooOrder
             } else {
                 $cities = $libraryApi->getAddressByPostcode($_POST['postcode']);
                 if ($cities && !empty($cities)) {
-                    foreach ($cities as $city) {
-                        $citiesList[] = [
-                            'id'       => $city->site_id,
-                            'text'     => $city->name,
-                            'actualId' => $city->site_id,
-                            'siteId'   => $city->site_id,
-                            'name'     => $city->name,
-                            'nameEn'   => $city->name_en,
-                            'postcode' => $city->post_code,
-                        ];
-                    }
+					if ($cities instanceof stdClass) {
+						$citiesList[] = [
+							'id'       => $cities->site_id,
+							'text'     => $cities->name,
+							'actualId' => $cities->site_id,
+							'siteId'   => $cities->site_id,
+							'name'     => $cities->name,
+							'nameEn'   => $cities->name_en,
+							'postcode' => $cities->post_code,
+						];
+					} else {
+						foreach ( $cities as $city ) {
+							$citiesList[] = [
+								'id'       => $city->site_id,
+								'text'     => $city->name,
+								'actualId' => $city->site_id,
+								'siteId'   => $city->site_id,
+								'name'     => $city->name,
+								'nameEn'   => $city->name_en,
+								'postcode' => $city->post_code,
+							];
+						}
+					}
                 }
             }
             if ($citiesList && !empty($citiesList)) {
@@ -1862,6 +1882,7 @@ class WooOrder
          */
         $json = [];
 
+		//var_dump($_POST);
         if (isset($_POST['action'])) {
             if ($_POST['params']['streetId'] != '' && $_POST['params']['streetId'] != '0') {
 
@@ -1884,7 +1905,8 @@ class WooOrder
                     'postcode' => $_POST['params']['postcode'],
                 ];
                 $addressValidate = $libraryApi->addressValidation($libraryApiAddress);
-                if ($addressValidate['valid']) {
+				$streetFound = $libraryApi->searchStreet($_POST['params']['country'],$_POST['params']['cityId'], $_POST['params']['streetName']);
+                if (isset($addressValidate['valid']) || $streetFound == false) {
 
                     /**
                      * Update order address.
@@ -1906,15 +1928,14 @@ class WooOrder
                     /**
                      * Update address.
                      */
-                    $this->updateOrderAddressValidated($_POST['params']);
+                    $this->updateOrderAddressValidated($_POST['params'], $streetFound);
 
                     /**
                      * Success message.
                      */
                     $successMessage = __('Address has been validated successfully.', 'dpdro');
                 } else {
-
-                    /**
+	                /**
                      * Error message.
                      */
                     $errorMessage = $addressValidate['error']['message'];

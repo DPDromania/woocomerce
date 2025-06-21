@@ -511,7 +511,7 @@ class Frontend
                                 foreach ($_cities as $_city) {
                                    if (isset($cities_ro[$_city[1]])) {
                                        $cleaned_ro_cities['RO'][$abbr][] = [
-                                           $cities_ro[$_city[1]]->name, $_city[1]
+                                           $cities_ro[$_city[1]]->name . " (".  $cities_ro[$_city[1]]->municipality .")", $_city[1]
                                        ];
                                        unset($cities_ro[$_city[1]]);
                                    } else {

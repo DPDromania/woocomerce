@@ -105,7 +105,17 @@ jQuery(function ($) {
         }
     });
 
+    $(document.body).on('change', 'select.city_select', function () {
+        var $container = $(this).closest('.form-row').parent(),
+            $city = $container.find('#billing_city, #shipping_city, #calc_shipping_city'),
+            postcode = $city.find(':selected').data('postcode');
 
+        if (postcode !== undefined) {
+            $container.find('#billing_postcode, #shipping_postcode, #calc_shipping_postcode').val(postcode);
+        } else {
+            $container.find('#billing_postcode, #shipping_postcode, #calc_shipping_postcode').val('');
+        }
+    });
 
     /* Ajax replaces .cart_totals (child of .cart-collaterals) on shipping calculator */
     if ($('.cart-collaterals').length && $('#calc_shipping_state').length) {
