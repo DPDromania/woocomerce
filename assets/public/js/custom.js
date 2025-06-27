@@ -135,10 +135,10 @@
                 return 348;
             case 'PL':
                 return 616;
-            case 'SL':
-                return 703;
-            case 'SK':
+            case 'SI':
                 return 705;
+            case 'SK':
+                return 703;
             case 'CZ':
                 return 203;
             case 'HR':
