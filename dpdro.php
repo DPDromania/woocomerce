@@ -7,7 +7,7 @@
  * 		Requires PHP min: 7.0
  * 		Requires Wordpress min: 5.0
  * 		Requires Woocommerce min: 3.9		
- * Version: 3.2.29
+ * Version: 3.2.30
  * Author: DPD-RO
  * Author URI: https://www.dpd.com/ro/ro/
  * Text Domain: dpdro
