@@ -8759,7 +8759,6 @@ return [
             [_x('Orşova', 'MH', 'dpd-city-select'), 225200],
             [_x('Ostrovu Corbului', 'MH', 'dpd-city-select'), 227248],
             [_x('Ostrovu Mare', 'MH', 'dpd-city-select'), 227223],
-            [_x('Pădina', 'MH', 'dpd-city-select'), 227340],
             [_x('Pădina Mare', 'MH', 'dpd-city-select'), 227344],
             [_x('Pădina Mică', 'MH', 'dpd-city-select'), 227346],
             [_x('Păltinişu', 'MH', 'dpd-city-select'), 227107],
