@@ -89,7 +89,7 @@ jQuery(function ($) {
     $(document.body).on('state_changing', function (e, country, state, $container) {
         var $citybox = $container.find('#billing_city, #shipping_city, #calc_shipping_city');
 
-        if (dpd_wc_city_select_params.cities[country]) {
+        if (dpd_wc_city_select_params.cities[country] && country == 'RO') {
             /* if the country has no states */
             if (state) {
                 if (dpd_wc_city_select_params.cities[country][state]) {

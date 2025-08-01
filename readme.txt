@@ -46,4 +46,4 @@ For further information, contact us at api.support[at]dpd.ro !
 * Press Add new button and then press Upload Plugin.
 * Drag & drop the .zip folder you downloaded and install plugin.
 
-If every thing works, activate plugin and now the new feature are ready to use.
+If every thing works, activate plugin and now the new feature are ready to use
