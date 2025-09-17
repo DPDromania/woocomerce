@@ -350,6 +350,54 @@
             return false;
         });
 
+        $(document).on('click', '.js-dpdro .js-d-shipment-info', function (e) {
+            e.preventDefault();
+            var self = $(this);
+            var shipments = [];
+            shipments.push(self.attr('data-shipment-id'));
+            var data = {
+                action: 'shipmentInfo',
+                nonce: self.attr('data-nonce'),
+                params: {
+                    shipments: shipments,
+                }
+            };
+            let cssClass = 'dashicons-image-rotate d-spinning ' + self.attr('data-nonce');
+            jQuery.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: dpdRo.ajaxurl,
+                data: data,
+                beforeSend: function () {
+
+                    self.find('i').removeClass('dashicons-money-alt').addClass(cssClass);
+                    console.log('aaa');
+                },
+                complete: function () { },
+                success: function (response) {
+                    const shipments = response.data.shipments;
+
+                    if (shipments.length > 0 && shipments[0].service?.additionalServices?.cod?.amount !== undefined) {
+                        // First shipment has COD → loop through all
+                        shipments.forEach((shipment, index) => {
+                            const priceString = `Shipment #${index + 1}: amount ${shipment.service.additionalServices.cod.amount} ${shipment.price.currency}`;
+                            alert(priceString);
+                            self.find('i').removeClass(cssClass).addClass('dashicons-money-alt');
+                        });
+                    } else {
+                        alert("Payment by card, no COD value");
+                    }
+
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+            return false;
+        });
+
+        
+
         // Go back
         $(document).on('click', '.js-dpdro .js-d-go-back', function (e) {
             e.preventDefault();

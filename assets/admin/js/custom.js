@@ -656,4 +656,36 @@
 
     });
 
+    $(document).on('click', '.js-d-get-offices', function (e) {
+
+        e.preventDefault();
+        var self = $(this);
+        var shipments = [];
+
+        var data = {
+            action: 'getOffices',
+            nonce: self.attr('data-nonce'),
+        };
+        let cssClass = 'dashicons-image-rotate d-spinning ' + self.attr('data-nonce');
+        jQuery.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: dpdRo.ajaxurl,
+            data: data,
+            beforeSend: function () {
+                self.text("Loading...");
+            },
+            complete: function () { },
+            success: function (response) {
+                self.text("Done, please refresh the page!"); // restore button text
+                alert("Done, please refresh the page!");
+
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+        return false;
+    });
+
 })(jQuery);

@@ -150,6 +150,12 @@ class WooOrders
                                     <i class="dashicons dashicons-location"></i>
                                 </a>
                             ';
+	                        $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+							echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
+                                </button>
+                            ';
                         } else {
                             $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                             echo '
@@ -174,6 +180,13 @@ class WooOrders
                             echo '
                                 <button style="cursor: help;" title="' . __('No pickup order', 'dpdro') . '" type="button" class="d-button d-opacity icon danger">
                                     <i class="dashicons dashicons-warning"></i>
+                                </button>
+                            ';
+
+	                        $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                        echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
                                 </button>
                             ';
                         }
@@ -205,6 +218,14 @@ class WooOrders
                                         <i class="dashicons dashicons-location"></i>
                                     </a>
                                 ';
+
+	                            $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                            echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
+                                </button>
+                            ';
+
                             } else {
                                 $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                                 echo '
@@ -231,6 +252,13 @@ class WooOrders
                                         <i class="dashicons dashicons-warning"></i>
                                     </button>
                                 ';
+
+	                            $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                            echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
+                                </button>
+                            ';
                             }
                         }
                     }
@@ -284,6 +312,13 @@ class WooOrders
                                 </button>
                             ';
                         }
+
+	                    $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                    echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
+                                </button>
+                            ';
                     } else {
                         $ajaxNonceCreateShipment = wp_create_nonce('dpdro_create_shipment');
                         echo '
@@ -334,6 +369,13 @@ class WooOrders
                                 </button>
                             ';
                         }
+
+	                    $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                    echo '
+                                <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                                    <i class="dashicons dashicons-money-alt"></i>
+                                </button>
+                            ';
                     } else {
                         $ajaxNonceCreateShipment = wp_create_nonce('dpdro_create_shipment');
                         echo '

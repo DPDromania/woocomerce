@@ -222,6 +222,13 @@ global $wp_version;
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
+                            <?php $ajaxNonceRequestOffices = wp_create_nonce('dpdro_get_offices');
+                            echo '
+                            <button data-nonce="' . $ajaxNonceRequestOffices . '" title="' . __('Get offices', 'dpdro') .'"  type="button" class="d-button d-opacity d-mb primary js-d-get-offices">
+                                Get offices
+                            </button>
+                            ';
+                            ?>
                         </div>
                         <hr>
                         <div class="d-field">

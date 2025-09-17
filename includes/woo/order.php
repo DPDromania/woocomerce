@@ -92,6 +92,8 @@ class WooOrder
         add_action('wp_ajax_nopriv_addShippingMethod', array($this, 'addShippingMethod'));
         add_action('wp_ajax_saveShippingMethod', array($this, 'saveShippingMethod'));
         add_action('wp_ajax_nopriv_saveShippingMethod', array($this, 'saveShippingMethod'));
+	    add_action('wp_ajax_shipmentInfo', array($this, 'getShipmentInfo'));
+
 
         /**
          * Order notice.
@@ -576,6 +578,13 @@ class WooOrder
                             </button>
                         ';
                     }
+	                $ajaxNonceRequestGetShipmentInfo = wp_create_nonce('dpdro_get_shipment_info');
+	                echo '
+                        <button data-nonce="' . $ajaxNonceRequestGetShipmentInfo . '" title="' . __('See payment value', 'dpdro') . '" data-shipment-id="' . $orderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-shipment-info">
+                            <i class="dashicons dashicons-money-alt"></i>
+                        </button>
+                    ';
+
                 } else {
                     $ajaxNonceCreateShipment = wp_create_nonce('dpdro_create_shipment');
                     echo '
@@ -2025,6 +2034,53 @@ class WooOrder
         echo wp_send_json($json);
         wp_die();
     }
+
+	public function getShipmentInfo()
+	{
+		check_ajax_referer('dpdro_get_shipment_info', 'nonce');
+
+		/**
+		 * Response.
+		 */
+		$json = [
+			'error' => true
+		];
+
+		if (isset($_POST['action'])) {
+			/**
+			 * Request params.
+			 */
+			$params = $_POST['params'];
+
+			/**
+			 * Data settings.
+			 */
+			$dataSettings = new DataSettings($this->wpdb);
+			$settings = $dataSettings->getSettings();
+
+			/**
+			 * Library API.
+			 */
+			$libraryApi = new LibraryApi($settings['username'], $settings['password']);
+			$shipmentInfo = $libraryApi->getShipmentInfo($params['shipments']);
+			if (!is_array($shipmentInfo) || empty($shipmentInfo) || array_key_exists('error', $shipmentInfo)) {
+				set_transient('dpdro_notice_error', $shipmentInfo['error']['message'], 60 * 5);
+			} else {
+				$json['error'] = false;
+				$json['data'] = $shipmentInfo;
+			}
+		} else {
+			$json['message'] = __('Something went wrong.', 'dpdro');
+			set_transient('dpdro_notice_error', $json['message'], 60 * 5);
+		}
+
+		/**
+		 * Return response.
+		 */
+		echo wp_send_json($json);
+		wp_die();
+	}
+
 
     /**
      * Ajax add address.

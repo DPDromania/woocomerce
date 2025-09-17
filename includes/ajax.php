@@ -64,6 +64,43 @@ class Ajax
 		add_action('wp_ajax_nopriv_saveTaxRates', array($this, 'saveTaxRates'));
 		add_action('wp_ajax_saveTaxRatesOffices', array($this, 'saveTaxRatesOffices'));
 		add_action('wp_ajax_nopriv_saveTaxRatesOffices', array($this, 'saveTaxRatesOffices'));
+		add_action('wp_ajax_getOffices', array($this, 'getOffices'));
+	}
+
+	public function getOffices()
+	{
+		check_ajax_referer('dpdro_get_offices', 'nonce');
+
+		$dataSettings = new DataSettings($this->wpdb);
+		$settings = $dataSettings->getSettings();
+
+		/**
+		 * Library API.
+		 */
+		$libraryApi = new LibraryApi($settings['username'], $settings['password']);
+
+		$json = [
+			'error' => true
+		];
+
+		if ($libraryApi->check()) {
+
+			/**
+			 * Library Lists.
+			 */
+			$libraryLists = new LibraryLists( $libraryApi );
+			$this->insertOffices( $libraryLists );
+			$json = [
+				'error' => false
+			];
+
+		}
+
+		/**
+		 * Return response.
+		 */
+		echo wp_send_json($json);
+		wp_die();
 	}
 
 	/**
@@ -93,7 +130,7 @@ class Ajax
 				$this->insertServices($libraryLists);
 				$this->createServicesFile($libraryLists);
 				$this->insertClients($libraryLists);
-				$this->insertOffices($libraryLists);
+				//$this->insertOffices($libraryLists);
 				$this->insertAddresses($libraryLists);
                 $this->insertCities($libraryLists);
 
@@ -163,7 +200,7 @@ class Ajax
 				$this->insertServices($libraryLists);
 				$this->createServicesFile($libraryLists);
 				$this->insertClients($libraryLists);
-				$this->insertOffices($libraryLists);
+				//$this->insertOffices($libraryLists);
 				$this->insertAddresses($libraryLists);
                 $this->insertCities($libraryLists);
 

@@ -559,6 +559,31 @@ class LibraryApi
 	}
 
 	/**
+	 * Request courier
+	 */
+	public function getShipmentInfo($orders)
+	{
+		/**
+		 * Parameters.
+		 */
+		$parameters = [
+			'api'    => 'shipment/info',
+			'method' => 'POST',
+			'data'   => [
+				'shipmentIds' => $orders,
+				'visitEndTime'           => '19:00',
+				'autoAdjustPickupDate'   => true
+			]
+		];
+
+		/**
+		 * Response.
+		 */
+		$response = $this->request($parameters);
+		return $response;
+	}
+
+	/**
 	 * Search street
 	 */
 	public function searchStreet($country, $city, $search)
