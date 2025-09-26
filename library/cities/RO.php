@@ -2867,7 +2867,7 @@ return [
 			[_x('Borolea', 'BT', 'dpd-city-select'), 717196],
 			[_x('Borzeşti', 'BT', 'dpd-city-select'), 717416],
 			[_x('Boscoteni', 'BT', 'dpd-city-select'), 717161],
-			[_x('Botoşani', 'BT', 'dpd-city-select'), ''],
+			[_x('Botoşani', 'BT', 'dpd-city-select'), 710001],
 			[_x('Bozieni', 'BT', 'dpd-city-select'), 715302],
 			[_x('Brăeşti', 'BT', 'dpd-city-select'), 717035],
 			[_x('Brăteni', 'BT', 'dpd-city-select'), 717132],
