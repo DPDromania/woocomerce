@@ -14,10 +14,10 @@ class DPDUtil {
 				return 348;
 			case 'PL':
 				return 616;
-			case 'SL':
-				return 703;
-			case 'SK':
+			case 'SI':
 				return 705;
+			case 'SK':
+				return 703;
 			case 'CZ':
 				return 203;
 			case 'HR':
@@ -59,6 +59,6 @@ class DPDUtil {
 
 	public static function getAllowedCountryCodes()
 	{
-		return ['RO', 'BG', 'GR', 'HU', 'PL', 'SL', 'SK', 'CZ', 'HR', 'AT', 'IT', 'DE', 'ES', 'FR','NL', 'BE', 'EE', 'DK', 'LU', 'LV', 'LT', 'FI', 'PT', 'SE'];
+		return ['RO', 'BG', 'GR', 'HU', 'PL', 'SI', 'SK', 'CZ', 'HR', 'AT', 'IT', 'DE', 'ES', 'FR','NL', 'BE', 'EE', 'DK', 'LU', 'LV', 'LT', 'FI', 'PT', 'SE'];
 	}
 }
