@@ -256,7 +256,7 @@ class WooOrders
                             if ($orderRequestCourier && !empty($orderRequestCourier)) {
                                 $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                                 echo '
-                                    <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon d-mb warning">
+                                    <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon d-mb warning">
                                         <i class="dashicons dashicons-printer"></i>
                                     </a>
                                 ';
@@ -264,18 +264,18 @@ class WooOrders
                                 if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                                     $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                                     echo '
-                                        <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb warning">
+                                        <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb warning">
                                             <i class="dashicons dashicons-printer"></i>
                                         </a>
                                     ';
                                 }
                                 echo '
-                                    <button style="cursor: help;" title="' . __('Order without DPD RO shipping method has been picked up', 'dpdro') . '" type="button" class="d-button icon success">
+                                    <button style="cursor: help;" title="' . __('Order without DPD RO shipping method has been picked up', 'dpdro') . '" type="button" class="d-button d-opacity icon success">
                                         <i class="dashicons dashicons-yes-alt"></i>
                                     </button>
                                 ';
                                 echo '
-                                    <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button icon d-mb info js-d-track-order">
+                                    <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button d-opacity icon d-mb info js-d-track-order">
                                         <i class="dashicons dashicons-location"></i>
                                     </a>
                                 ';
@@ -290,7 +290,7 @@ class WooOrders
                             } else {
                                 $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                                 echo '
-                                    <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon d-mb warning">
+                                    <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon d-mb warning">
                                         <i class="dashicons dashicons-printer"></i>
                                     </a>
                                 ';
@@ -298,18 +298,18 @@ class WooOrders
                                 if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                                     $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                                     echo '
-                                        <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb warning">
+                                        <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb warning">
                                             <i class="dashicons dashicons-printer"></i>
                                         </a>
                                     ';
                                 }
                                 echo '
-                                    <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button icon d-mb info js-d-track-order">
+                                    <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button d-opacity icon d-mb info js-d-track-order">
                                         <i class="dashicons dashicons-location"></i>
                                     </a>
                                 ';
                                 echo '
-                                    <button style="cursor: help;" title="' . __('No pickup order', 'dpdro') . '" type="button" class="d-button icon danger">
+                                    <button style="cursor: help;" title="' . __('No pickup order', 'dpdro') . '" type="button" class="d-button d-opacity icon danger">
                                         <i class="dashicons dashicons-warning"></i>
                                     </button>
                                 ';
@@ -394,10 +394,10 @@ class WooOrders
                         $ajaxNonceRequestCourier = wp_create_nonce('dpdro_request_courier');
                         $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                         echo '
-                            <button data-nonce="' . $ajaxNonceDeleteShipment . '" title="' . __('Delete shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button icon d-mb danger js-d-delete-shipment">
+                            <button data-nonce="' . $ajaxNonceDeleteShipment . '" title="' . __('Delete shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button d-opacity icon d-mb danger js-d-delete-shipment">
                                 <i class="dashicons dashicons-trash"></i>
                             </button>
-                            <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon d-mb warning">
+                            <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon d-mb warning">
                                 <i class="dashicons dashicons-printer"></i>
                             </a>
                         ';
@@ -405,7 +405,7 @@ class WooOrders
                         if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                             $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                             echo '
-                                <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb warning">
+                                <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb warning">
                                     <i class="dashicons dashicons-printer"></i>
                                 </a>
                             ';
@@ -413,19 +413,19 @@ class WooOrders
                         $orderRequestCourier = $wooOrder->getRequestCourier($wooOrderShipment->shipment_id);
                         if (!$orderRequestCourier || empty($orderRequestCourier)) {
                             echo '
-                                <button data-nonce="' . $ajaxNonceRequestCourier . '" title="' . __('Request courier for order without DPD RO shipping method', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button icon d-mb primary js-d-request-courier">
+                                <button data-nonce="' . $ajaxNonceRequestCourier . '" title="' . __('Request courier for order without DPD RO shipping method', 'dpdro') . '" data-shipment-id="' . $wooOrderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-request-courier">
                                     <i class="dashicons dashicons-car"></i>
                                 </button>
                             ';
                         }
                         echo '
-                            <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb info js-d-track-order">
+                            <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $wooOrderShipment->shipment_id . '" title="' . __('Track for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb info js-d-track-order">
                                 <i class="dashicons dashicons-location"></i>
                             </a>
                         ';
                         if ($orderRequestCourier && !empty($orderRequestCourier)) {
                             echo '
-                                <button style="cursor: help;" title="' . __('A courier has been requested for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon success">
+                                <button style="cursor: help;" title="' . __('A courier has been requested for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon success">
                                     <i class="dashicons dashicons-info-outline"></i>
                                 </button>
                             ';
@@ -440,7 +440,7 @@ class WooOrders
                     } else {
                         $ajaxNonceCreateShipment = wp_create_nonce('dpdro_create_shipment');
                         echo '
-                            <button data-nonce="' . $ajaxNonceCreateShipment . '" title="' . __('Create shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button icon d-mb primary js-d-create-shipment">
+                            <button data-nonce="' . $ajaxNonceCreateShipment . '" title="' . __('Create shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button d-opacity icon d-mb primary js-d-create-shipment">
                                 <i class="dashicons dashicons-welcome-add-page"></i>
                             </button>
                         ';

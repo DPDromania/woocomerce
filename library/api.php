@@ -285,15 +285,23 @@ class LibraryApi
 				}
 			}
 		} else {
+			/**
+			 * countryByID() can return a string or an error array when the DPD
+			 * location/country request fails or the country isn't recognized.
+			 * Guard so a transient API hiccup doesn't crash the cart with
+			 * "Cannot access offset of type string on string".
+			 */
 			$parameters['data']['recipient'] = [
 				'addressLocation' => [
-					'countryId' => (int) $country['id'],
-					'siteName'  => (string) $options['package']['city']
+					'siteName' => (string) $options['package']['city']
 				],
 				'privatePerson' => true
 			];
-			if (array_key_exists('postCodeFormats', $country) && !empty($country['postCodeFormats']) && is_array($country['postCodeFormats'])) {
-				$parameters['data']['recipient']['addressLocation']['postCode'] = $this->formatPostcode($country, $options['package']['postcode']);
+			if (is_array($country) && isset($country['id'])) {
+				$parameters['data']['recipient']['addressLocation']['countryId'] = (int) $country['id'];
+				if (array_key_exists('postCodeFormats', $country) && !empty($country['postCodeFormats']) && is_array($country['postCodeFormats'])) {
+					$parameters['data']['recipient']['addressLocation']['postCode'] = $this->formatPostcode($country, $options['package']['postcode']);
+				}
 			}
 		}
 

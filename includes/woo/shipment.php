@@ -646,6 +646,15 @@ $settings = $dataSettings->getSettings();
             <button data-nonce="<?= $ajaxNonce; ?>" data-order-id="<?= $order->id; ?>" type="button" class="d-button primary js-d-save-shipment">
                 <?php _e('Save shipment', 'dpdro'); ?>
             </button>
+        <?php elseif ($order->get_shipping_country() === 'RO') : ?>
+            <!-- Allow a direct AWB for RO orders that have no DPD RO shipping method
+                 (e.g. Flat rate). The shipment defaults to service 2505 in saveShipment(). -->
+            <button type="button" class="d-button secondary js-d-modal-close">
+                <?php _e('Cancel', 'dpdro'); ?>
+            </button>
+            <button data-nonce="<?= $ajaxNonce; ?>" data-order-id="<?= $order->id; ?>" type="button" class="d-button primary js-d-save-shipment">
+                <?php _e('Save shipment', 'dpdro'); ?>
+            </button>
         <?php else : ?>
             <span class="d-alert d-error"><?php _e('You must add DPD RO shipping method to the order.', 'dpdro'); ?></span>
         <?php endif; ?>

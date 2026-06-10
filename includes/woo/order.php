@@ -52,6 +52,11 @@ class WooOrder
     {
         add_action('woocommerce_checkout_update_order_review', array($this, 'orderReview'), 10, 1);
         add_action('woocommerce_thankyou', array($this, 'orderComplete'));
+        // woocommerce_thankyou is unreliable: it depends on the customer reaching the
+        // thank-you page and does not fire consistently for Block checkout (Store API).
+        // Also bind to the order-creation hooks so the DPD address row is always stored.
+        add_action('woocommerce_checkout_order_processed', array($this, 'orderComplete'), 10, 1);
+        add_action('woocommerce_store_api_checkout_order_processed', array($this, 'orderCompleteStoreApi'), 10, 1);
         add_action('woocommerce_process_shop_order_meta', array($this, 'orderCompleteAdmin'), 10, 2);
         add_action('woocommerce_admin_order_data_after_shipping_address', array($this, 'orderActionsAdmin'));
         add_action('woocommerce_email_order_meta', array($this, 'orderActionEmail'), 10, 3);
@@ -118,6 +123,20 @@ class WooOrder
     }
 
     /**
+     * Order complete (Store API / Block checkout).
+     * The woocommerce_store_api_checkout_order_processed hook passes a WC_Order
+     * object instead of an ID, so normalize before delegating.
+     */
+    public function orderCompleteStoreApi($order)
+    {
+        if (is_a($order, 'WC_Order')) {
+            $this->orderComplete($order->get_id());
+        } elseif (is_numeric($order)) {
+            $this->orderComplete((int) $order);
+        }
+    }
+
+    /**
      * Order complete.
      */
     public function orderComplete($orderId)
@@ -127,14 +146,19 @@ class WooOrder
         }
 
         /**
-         * Allow code execution only once 
+         * Get an instance of the WC_Order object.
          */
-        if (!get_post_meta($orderId, 'dpdro_order_complete', true)) {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return;
+        }
 
-            /**
-             * Get an instance of the WC_Order object. 
-             */
-            $order = wc_get_order($orderId);
+        /**
+         * Allow code execution only once.
+         * Read the flag through the order object (HPOS-safe and consistent with
+         * the write below), so the multiple bound hooks can't double-insert.
+         */
+        if (!$order->get_meta('dpdro_order_complete')) {
 
             /**
              * Order shipping method.
@@ -476,7 +500,7 @@ class WooOrder
                         if ($orderRequestCourier && !empty($orderRequestCourier)) {
                             $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
 	                       echo '
-                                <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon d-mb warning">
+                                <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon d-mb warning">
                                     <i class="dashicons dashicons-printer"></i>
                                 </a>
                             ';
@@ -484,25 +508,25 @@ class WooOrder
                             if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                                 $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                                 echo '
-                                    <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb warning">
+                                    <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb warning">
                                         <i class="dashicons dashicons-printer"></i>
                                     </a>
                                 ';
                             }
                             echo '
-                                <button style="cursor: help;" title="' . __('Order without DPD RO shipping method has been picked up', 'dpdro') . '" type="button" class="d-button icon success">
+                                <button style="cursor: help;" title="' . __('Order without DPD RO shipping method has been picked up', 'dpdro') . '" type="button" class="d-button d-opacity icon success">
                                     <i class="dashicons dashicons-yes-alt"></i>
                                 </button>
                             ';
                             echo '
-                                <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button icon info js-d-track-order">
+                                <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button d-opacity icon info js-d-track-order">
                                     <i class="dashicons dashicons-location"></i>
                                 </a>
                             ';
                         } else {
                             $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                             echo '
-                                <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon d-mb warning">
+                                <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon d-mb warning">
                                     <i class="dashicons dashicons-printer"></i>
                                 </a>
                             ';
@@ -510,18 +534,18 @@ class WooOrder
                             if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                                 $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                                 echo '
-                                    <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon d-mb warning">
+                                    <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon d-mb warning">
                                         <i class="dashicons dashicons-printer"></i>
                                     </a>
                                 ';
                             }
                             echo '
-                                <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button icon info js-d-track-order">
+                                <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track', 'dpdro') . '" class="d-button d-opacity icon info js-d-track-order">
                                     <i class="dashicons dashicons-location"></i>
                                 </a>
                             ';
                             echo '
-                                <button style="cursor: help;" title="' . __('No pickup order', 'dpdro') . '" type="button" class="d-button icon danger">
+                                <button style="cursor: help;" title="' . __('No pickup order', 'dpdro') . '" type="button" class="d-button d-opacity icon danger">
                                     <i class="dashicons dashicons-warning"></i>
                                 </button>
                             ';
@@ -599,10 +623,10 @@ class WooOrder
                     $ajaxNonceRequestCourier = wp_create_nonce('dpdro_request_courier');
                     $orderShipmentLabels = admin_url('admin.php/dpdro_print?print=labels&id=' . absint($order->id));
                     echo '
-                        <button data-nonce="' . $ajaxNonceDeleteShipment . '" title="' . __('Delete shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button icon danger js-d-delete-shipment">
+                        <button data-nonce="' . $ajaxNonceDeleteShipment . '" title="' . __('Delete shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button d-opacity icon danger js-d-delete-shipment">
                             <i class="dashicons dashicons-trash"></i>
                         </button>
-                        <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon warning">
+                        <a href="' . $orderShipmentLabels . '" title="' . __('Print labels for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon warning">
                             <i class="dashicons dashicons-printer"></i>
                         </a>
                     ';
@@ -610,7 +634,7 @@ class WooOrder
                     if ($orderShipmentReturns && $orderShipmentReturns->shipment_has_voucher === 'true') {
                         $orderShipmentVoucher = admin_url('admin.php/dpdro_print?print=voucher&id=' . absint($order->id));
                         echo '
-                            <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon warning">
+                            <a href="' . $orderShipmentVoucher . '" title="' . __('Print voucher for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon warning">
                                 <i class="dashicons dashicons-printer"></i>
                             </a>
                         ';
@@ -618,19 +642,19 @@ class WooOrder
                     $orderRequestCourier = $this->getRequestCourier($orderShipment->shipment_id);
                     if (!$orderRequestCourier || empty($orderRequestCourier)) {
                         echo '
-                            <button data-nonce="' . $ajaxNonceRequestCourier . '" title="' . __('Request courier for order without DPD RO shipping method', 'dpdro') . '" data-shipment-id="' . $orderShipment->shipment_id  . '" type="button" class="d-button icon primary js-d-request-courier">
+                            <button data-nonce="' . $ajaxNonceRequestCourier . '" title="' . __('Request courier for order without DPD RO shipping method', 'dpdro') . '" data-shipment-id="' . $orderShipment->shipment_id  . '" type="button" class="d-button d-opacity icon primary js-d-request-courier">
                                 <i class="dashicons dashicons-car"></i>
                             </button>
                         ';
                     }
                     echo '
-                        <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track for order without DPD RO shipping method', 'dpdro') . '" class="d-button icon info js-d-track-order">
+                        <a target="_blank" href="https://tracking.dpd.ro/?shipmentNumber=' . $orderShipment->shipment_id . '" title="' . __('Track for order without DPD RO shipping method', 'dpdro') . '" class="d-button d-opacity icon info js-d-track-order">
                             <i class="dashicons dashicons-location"></i>
                         </a>
                     ';
                     if ($orderRequestCourier && !empty($orderRequestCourier)) {
                         echo '
-                            <button style="cursor: help;" title="' . __('A courier has been requested for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button icon success">
+                            <button style="cursor: help;" title="' . __('A courier has been requested for order without DPD RO shipping method', 'dpdro') . '" type="button" class="d-button d-opacity icon success">
                                 <i class="dashicons dashicons-info-outline"></i>
                             </button>
                         ';
@@ -638,7 +662,7 @@ class WooOrder
                 } else {
                     $ajaxNonceCreateShipment = wp_create_nonce('dpdro_create_shipment');
                     echo '
-                        <button data-nonce="' . $ajaxNonceCreateShipment . '" title="' . __('Create shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button icon primary js-d-create-shipment">
+                        <button data-nonce="' . $ajaxNonceCreateShipment . '" title="' . __('Create shipment for order without DPD RO shipping method', 'dpdro') . '" data-order-id="' . $order->id  . '" type="button" class="d-button d-opacity icon primary js-d-create-shipment">
                             <i class="dashicons dashicons-welcome-add-page"></i>
                         </button>
                     ';
@@ -1239,9 +1263,30 @@ class WooOrder
                 $orderShippingMethod = str_replace('dpdro_shipping_', '', $method->get_method_id());
                 $orderShippingMethod = str_replace('shipping_dpd_', '', $orderShippingMethod);
             }
+            /**
+             * Whether the order's actual WooCommerce shipping method is a DPD RO
+             * service. When it is not (e.g. Flat rate), the shipping cost is what
+             * the customer agreed to pay and must stay inside the COD amount.
+             */
+            $orderHasDpdMethod = (bool) $dataList->getServiceById($orderShippingMethod);
+            $directShippingOverride = false;
             if (!$dataList->getServiceById($orderShippingMethod)) {
                 $orderShipping = $this->getOrderShipping($order->id);
-                $orderShippingMethod = $orderShipping->method_code;
+                if ($orderShipping && !empty($orderShipping)) {
+                    $orderShippingMethod = $orderShipping->method_code;
+                } elseif ($order->get_shipping_country() === 'RO') {
+                    /**
+                     * Allow a direct AWB for RO orders that have no DPD RO shipping
+                     * method (e.g. Flat rate) and no saved DPD shipping override.
+                     * Default to service 2505. A matching DPD shipping override
+                     * record is persisted only after the shipment is created (see
+                     * success block below), so the rest of the plugin (orders-list
+                     * icons, labels, courier request, tracking) treats it like a
+                     * normal order shipped without a DPD RO shipping method.
+                     */
+                    $orderShippingMethod = '2505';
+                    $directShippingOverride = true;
+                }
             }
             $requestData['service']['serviceId'] = (int) $orderShippingMethod;
 
@@ -1432,6 +1477,16 @@ class WooOrder
                             //$requestData['service']['additionalServices']['cod']['includeShippingPrice'] = true;
                         }
                     }
+                    /**
+                     * Orders without a real DPD RO shipping method (e.g. Flat rate)
+                     * have no DPD shipping fee to handle separately: the customer
+                     * pays the full order total (incl. the flat-rate shipping) on
+                     * delivery, so the COD must equal the full order total and the
+                     * shipping line must never be subtracted.
+                     */
+                    if (!$orderHasDpdMethod) {
+                        $totalCod = number_format((float) $order->get_total(), 2, '.', '');
+                    }
                     $requestData['service']['additionalServices']['cod']['amount'] = number_format((float) $totalCod, 2, '.', '');
                 }
             } else {
@@ -1470,7 +1525,40 @@ class WooOrder
              * Address
              */
             $addressData = $this->getOrderAddress($params['orderId']);
-            if (
+
+            /**
+             * Resolve a DPD pickup office/locker id from every place it may be
+             * stored, in priority order:
+             *  1) the saved DPD address record (method = pickup),
+             *  2) the legacy post meta (classic checkout / admin saveOffice),
+             *  3) the Block checkout additional fields, which WooCommerce stores
+             *     as _wc_shipping|billing/dpdro/pickup_id (NOT dpdro_pickup).
+             * When any is present the recipient must be the office/locker, with
+             * no street address, and nearest-office auto-select disabled.
+             */
+            $resolvedPickupOfficeId = '';
+            if (is_object($addressData) && $addressData->method === 'pickup' && !empty($addressData->office_id)) {
+                $resolvedPickupOfficeId = $addressData->office_id;
+            }
+            if (empty($resolvedPickupOfficeId)) {
+                $resolvedPickupOfficeId = get_post_meta($params['orderId'], 'dpdro_pickup', true);
+            }
+            if (empty($resolvedPickupOfficeId)) {
+                $resolvedPickupOfficeId = $order->get_meta('_wc_shipping/dpdro/pickup_id');
+            }
+            if (empty($resolvedPickupOfficeId)) {
+                $resolvedPickupOfficeId = $order->get_meta('_wc_billing/dpdro/pickup_id');
+            }
+
+            if (!empty($resolvedPickupOfficeId)) {
+
+                /**
+                 * Pickup (office / locker) delivery: send only the office id and
+                 * disable nearest-office auto-select. No street address.
+                 */
+                $requestData['recipient']['pickupOfficeId'] = (int) $resolvedPickupOfficeId;
+                $requestData['recipient']['autoSelectNearestOffice'] = false;
+            } elseif (
 				$addressData &&
 				$this->checkCountry($order->get_shipping_country()) &&
 				(
@@ -1548,12 +1636,24 @@ class WooOrder
                 }
             } else {
 
-	            if ($addressData->method && $addressData->method === 'pickup') {
+	            // Read with get_post_meta to match how it is written (update_post_meta)
+	            // everywhere else in this class; $order->get_meta() can miss it under HPOS.
+	            $metaPickupOfficeId = get_post_meta($params['orderId'], 'dpdro_pickup', true);
+	            if (is_object($addressData) && $addressData->method && $addressData->method === 'pickup') {
 
 		            /**
 		             * Address pickup
 		             */
 		            $requestData['recipient']['pickupOfficeId'] = (int) $addressData->office_id;
+	            } elseif (!empty($metaPickupOfficeId)) {
+
+		            /**
+		             * Address pickup (office / locker) from checkout meta.
+		             * Orders without a stored DPD address (e.g. Flat rate) can still
+		             * carry a DPD office/locker selected via the office-locator widget.
+		             * Deliver to that pickup point instead of the street address.
+		             */
+		            $requestData['recipient']['pickupOfficeId'] = (int) $metaPickupOfficeId;
 	            } else {
 		            $countryData = $libraryApi->countryByID( $order->get_shipping_country() );
 		            if ( $countryData ) {
@@ -1562,7 +1662,19 @@ class WooOrder
 		            if ( $order->get_shipping_city() ) {
 			            $requestData['recipient']['address']['siteName'] = $this->removeDiactritics( $order->get_shipping_city() );
 		            }
-		            if ( strlen( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() ) > 34 ) {
+		            if ( $order->get_shipping_country() === 'RO' || $order->get_shipping_country() === 'BG' ) {
+			            /**
+			             * RO and BG reject the addressLine1/2 format for a recipient: the
+			             * API requires a structured street object OR all address details
+			             * in the address note. Since we only have the raw WooCommerce
+			             * address here, put the full street into addressNote.
+			             * Other DPD-served countries (e.g. HU / service 2212) keep the
+			             * addressLine1/2 format they used previously.
+			             */
+			            $requestData['recipient']['address']['addressNote'] = $this->removeDiactritics(
+				            trim( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() )
+			            );
+		            } else if ( strlen( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() ) > 34 ) {
 			            $orderAddressLength                                  = strlen( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2() );
 			            $addressLine1                                        = substr( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 0, 34 );
 			            $addressLine2                                        = substr( $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2(), 34, $orderAddressLength );
@@ -1605,6 +1717,23 @@ class WooOrder
                 ];
                 $orderShipment = $this->insertOrderShipment($shipmentData);
                 if ($orderShipment && !empty($orderShipment)) {
+                    /**
+                     * RO direct AWB: persist the DPD shipping override now that the
+                     * shipment exists, so the orders-list shows the full icon set
+                     * (delete / labels / courier / track / payment) like a normal
+                     * order shipped without a DPD RO shipping method.
+                     */
+                    if ($directShippingOverride && !$this->getOrderShipping($order->id)) {
+                        $directService = $dataList->getServiceById($orderShippingMethod);
+                        $this->insertOrderShipping([
+                            'order_id'     => $order->id,
+                            'method_id'    => 'dpdro_shipping_' . $orderShippingMethod,
+                            'method_code'  => $orderShippingMethod,
+                            'method_title' => ($directService && !empty($directService->service_name))
+                                ? $directService->service_name
+                                : 'DPD RO',
+                        ]);
+                    }
                     $json['success'] = true;
                     $successMessage = __('Shipment created successfully.', 'dpdro');
                     $notice = sprintf(__('Shipment created successfully for %s.', 'dpdro'), '<b>Order ID: ' . $params['orderId'] . '</b>');
