@@ -379,6 +379,7 @@
                     city_dropdown: $('.js-d-setting[name="city_dropdown"]:checked').length ? '1' : '0',
                     use_default_weight: $('.js-d-setting[name="use_default_weight"]:checked').length ? '1' : '0',
                     default_weight: $('.js-d-setting[name="default_weight"]').val().trim(),
+                    debug_log: $('.js-d-setting[name="debug_log"]:checked').length ? '1' : '0',
                 }
             };
             jQuery.ajax({

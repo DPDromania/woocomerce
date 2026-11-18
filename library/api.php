@@ -48,6 +48,10 @@ class LibraryApi
 		$key =  $key . 'cache__' . date('Y_m_d_H_') . $time . '_00' . '__' . sha1($this->apiUrl . $parameters['api'] . '/' . $data);
 		$cache = $this->getCache($key);
 		if ($cache) {
+			DpdroStorage::log(array(
+				'api'   => $parameters['api'],
+				'cache' => 'hit',
+			));
 			return $cache;
 		}
 
@@ -73,19 +77,16 @@ class LibraryApi
 		curl_close($connection);
 
 		/**
-		 * Initialize logs.
+		 * Debug log: off unless enabled in Advanced settings. DpdroStorage::log()
+		 * masks the credentials before anything is written.
 		 */
-		$logs = [
-			'request' => $parameters['data'],
-			'timestamp' => date('Y-m-d h:i:s')
-		];
-		if ($error) {
-			$logs['response'] = $error;
-		} else {
-			$logs['response'] = 'Success!';
-		}
-		$jsonLogs = json_encode($logs);
-		file_put_contents(PLUGIN_LOGS_DIR_DPDRO . '/logs.json', print_r($jsonLogs, true) . "\n", FILE_APPEND);
+		DpdroStorage::log(array(
+			'api'      => $parameters['api'],
+			'method'   => $parameters['method'],
+			'cache'    => 'miss',
+			'request'  => $parameters['data'],
+			'response' => $error ? $error : 'Success!',
+		));
 
 		/**
 		 * Return response.
@@ -147,18 +148,9 @@ class LibraryApi
 	 */
 	private function setCache($key, $data)
 	{
-		if (!is_dir(PLUGIN_LOGS_DIR_DPDRO)) {
-			mkdir(PLUGIN_LOGS_DIR_DPDRO);
-		}
-		$dir = PLUGIN_LOGS_DIR_DPDRO . '/' . DIRECTORY_SEPARATOR . date('Y-m-d');
-		if (!is_dir($dir)) {
-			mkdir($dir);
-		}
+		$dir = DpdroStorage::cacheDir();
 		if (is_dir($dir)) {
-			$file = $dir . DIRECTORY_SEPARATOR . $key;
-			$log = $dir . DIRECTORY_SEPARATOR . '000_cache_log';
-			file_put_contents($file, serialize($data));
-			file_put_contents($log, date('Y-m-d H:i:s') . "\t" . 'saving: ' . "\t" . $key . "\n", FILE_APPEND);
+			file_put_contents($dir . DIRECTORY_SEPARATOR . $key, serialize($data));
 		}
 	}
 
@@ -167,24 +159,11 @@ class LibraryApi
 	 */
 	private function getCache($key)
 	{
-		if (!is_dir(PLUGIN_LOGS_DIR_DPDRO)) {
-			mkdir(PLUGIN_LOGS_DIR_DPDRO);
+		$file = DpdroStorage::cacheDir() . DIRECTORY_SEPARATOR . $key;
+		if (is_file($file)) {
+			// Cache entries are arrays/strings only; never instantiate objects.
+			return unserialize(file_get_contents($file), array('allowed_classes' => false));
 		}
-		$dir = PLUGIN_LOGS_DIR_DPDRO . '/' . DIRECTORY_SEPARATOR . date('Y-m-d');
-		if (!is_dir($dir)) {
-			mkdir($dir);
-		}
-		$log = $dir . DIRECTORY_SEPARATOR . '000_cache_log';
-		if (is_dir($dir)) {
-			$file = $dir . DIRECTORY_SEPARATOR . $key;
-			if (is_file($file)) {
-				file_put_contents($log, date('Y-m-d H:i:s') . "\t" .  'getting: ' .  "\t" .  $key . "\n", FILE_APPEND);
-				$content = file_get_contents($file);
-				return unserialize($content);
-			}
-		}
-		$log = $dir . DIRECTORY_SEPARATOR . '000_cache_log';
-		file_put_contents($log, date('Y-m-d H:i:s') . "\t" . 'missed: ' . "\t" .  $key . "\n", FILE_APPEND);
 		return false;
 	}
 

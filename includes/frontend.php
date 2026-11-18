@@ -382,6 +382,13 @@ class Frontend
 		add_action('woocommerce_review_order_after_shipping', array($this, 'onRefresh'));
 
 		/**
+		 * Cash on delivery is not allowed for DPD office/locker delivery.
+		 * Block the order at placement with a clear error (classic + Block checkout).
+		 */
+		add_action('woocommerce_checkout_process', array($this, 'validateCodPickup'));
+		add_action('woocommerce_store_api_checkout_update_order_from_request', array($this, 'validateCodPickupStoreApi'), 10, 2);
+
+		/**
 		 * Change position of city field.
 		 */
 		add_filter('woocommerce_default_address_fields', array($this, 'changeCityFieldPosition'));
@@ -420,7 +427,7 @@ class Frontend
 						<input type="hidden" name="shipping_pickup" id="shipping_pickup" value="' . $pickup . '" />
 						<span class="woocommerce-input-wrapper">
 							<input type="hidden" class="js-dpdro-offices-type" name="billing_pickup_type" id="billing_pickup_type" value="' . $pickupType  . '" />
-							<input type="text" class="input-text js-dpdro-offices-name" name="billing_pickup_name" id="" placeholder="' . __('No office selected') . '" value="' . $pickupName  . '" disabled />
+							<input type="text" class="input-text js-dpdro-offices-name" name="billing_pickup_name" id="" placeholder="' . __('No office selected') . '" value="' . $pickupName  . '" readonly />
 						</span>
 						<iframe style="margin-top: 10px;" id="frameOfficeLocator" name="frameOfficeLocator" src="https://services.dpd.ro/office_locator_widget_v3/office_locator.php?lang=en&showAddressForm=0&showOfficesList=0&selectOfficeButtonCaption=Select this office" width="800px" height="300px" ></iframe>
 					</p>
@@ -752,6 +759,110 @@ class Frontend
 		}
 		$this->checkoutTax();
 		return $availableGateways;
+	}
+
+	/**
+	 * Whether COD must be blocked for the given pickup point name.
+	 * Only PAYPOINT pickup points (offices/lockers whose name contains "PAYPOINT")
+	 * do not accept cash on delivery.
+	 */
+	private function isCodBlockedPickup($pickupName)
+	{
+		return is_string($pickupName) && stripos($pickupName, 'PAYPOINT') !== false;
+	}
+
+	/**
+	 * Resolve the pickup point name. Prefer the supplied name; if it is missing
+	 * (e.g. classic checkout where the disabled field is not submitted), look it
+	 * up from the DPD offices table by its id.
+	 */
+	private function resolvePickupName($pickupId, $pickupName = '')
+	{
+		$pickupName = is_string($pickupName) ? trim($pickupName) : '';
+		$noOffice = __('No office selected', 'dpdro');
+		if ($pickupName !== '' && strcasecmp($pickupName, $noOffice) !== 0) {
+			return $pickupName;
+		}
+		if (!empty($pickupId) && class_exists('DataLists')) {
+			$office = (new DataLists($this->wpdb))->getOfficeById($pickupId);
+			if ($office && !empty($office->office_name)) {
+				return (string) $office->office_name;
+			}
+		}
+		return $pickupName;
+	}
+
+	/**
+	 * Block COD + DPD PAYPOINT pickup on classic checkout.
+	 * Adds an error notice so WooCommerce does not create the order.
+	 */
+	public function validateCodPickup()
+	{
+		$paymentMethod = isset($_POST['payment_method']) ? wc_clean(wp_unslash($_POST['payment_method'])) : '';
+		if ($paymentMethod !== 'cod') {
+			return;
+		}
+
+		$shipToDifferent = isset($_POST['ship_to_different_address']) && !empty($_POST['ship_to_different_address']);
+		$pickupId = '';
+		if ($shipToDifferent && !empty($_POST['shipping_pickup'])) {
+			$pickupId = wc_clean(wp_unslash($_POST['shipping_pickup']));
+		} elseif (!empty($_POST['billing_pickup'])) {
+			$pickupId = wc_clean(wp_unslash($_POST['billing_pickup']));
+		}
+
+		$pickupName = '';
+		if ($shipToDifferent && !empty($_POST['shipping_pickup_name'])) {
+			$pickupName = wc_clean(wp_unslash($_POST['shipping_pickup_name']));
+		} elseif (!empty($_POST['billing_pickup_name'])) {
+			$pickupName = wc_clean(wp_unslash($_POST['billing_pickup_name']));
+		}
+
+		if ($this->isCodBlockedPickup($this->resolvePickupName($pickupId, $pickupName))) {
+			wc_add_notice(
+				__('Cash on delivery is not available for the selected PAYPOINT pickup point. Please choose another payment method.', 'dpdro'),
+				'error'
+			);
+		}
+	}
+
+	/**
+	 * Block COD + DPD PAYPOINT pickup on Block / Store API checkout.
+	 * Throws a RouteException so the order is not placed.
+	 */
+	public function validateCodPickupStoreApi($order, $request)
+	{
+		$paymentMethod = '';
+		if (is_object($request) && method_exists($request, 'get_param')) {
+			$paymentMethod = (string) $request->get_param('payment_method');
+		}
+		if ($paymentMethod === '' && is_object($order) && method_exists($order, 'get_payment_method')) {
+			$paymentMethod = (string) $order->get_payment_method();
+		}
+		if ($paymentMethod !== 'cod') {
+			return;
+		}
+
+		$pickupId = '';
+		$pickupName = '';
+		if (is_object($order) && method_exists($order, 'get_meta')) {
+			$pickupId = $order->get_meta('_wc_shipping/dpdro/pickup_id');
+			if (empty($pickupId)) {
+				$pickupId = $order->get_meta('_wc_billing/dpdro/pickup_id');
+			}
+			$pickupName = $order->get_meta('_wc_shipping/dpdro/pickup_name');
+			if (empty($pickupName)) {
+				$pickupName = $order->get_meta('_wc_billing/dpdro/pickup_name');
+			}
+		}
+
+		if ($this->isCodBlockedPickup($this->resolvePickupName($pickupId, $pickupName)) && class_exists('\Automattic\WooCommerce\StoreApi\Exceptions\RouteException')) {
+			throw new \Automattic\WooCommerce\StoreApi\Exceptions\RouteException(
+				'dpdro_cod_not_allowed_pickup',
+				__('Cash on delivery is not available for the selected PAYPOINT pickup point. Please choose another payment method.', 'dpdro'),
+				400
+			);
+		}
 	}
 
 	/** 

@@ -49,6 +49,13 @@ class Module
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/wp/i18n.php';
 
 		/**
+		 * Cache / debug-log storage. Registered outside the WooCommerce check so
+		 * the legacy log removal and the daily cache cleanup always run.
+		 */
+		require_once plugin_dir_path(dirname(__FILE__)) . 'library/storage.php';
+		DpdroStorage::register();
+
+		/**
 		 * Check if WooCommerce is activated
 		 */
 		if (class_exists('woocommerce')) {

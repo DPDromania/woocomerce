@@ -25,3 +25,11 @@ global $wpdb;
 
 // drop the table from the database.
 $wpdb->query( "DROP TABLE IF EXISTS `dpdro_settings`" );
+
+/**
+ * Remove the API cache folder (wp-content/dpdro), which may still hold the
+ * plain-text logs.json written by versions up to 3.3.11, and the cron job.
+ */
+require_once plugin_dir_path(__FILE__) . 'library/storage.php';
+DpdroStorage::unscheduleCleanup();
+DpdroStorage::removeAll();

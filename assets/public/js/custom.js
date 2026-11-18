@@ -32,6 +32,37 @@ function dpdroLog(enable, type, ...args) {
 
     window.console.log("[" + receivedTypeLabel + "]", ...args);
 }
+
+/**
+ * Resolve the postcode to write into the checkout field after a city lookup.
+ *
+ * The state/county change handler calls reloadWidget() with the sentinel '-1',
+ * meaning "a new county was selected, ignore any postcode already in the form".
+ * That sentinel is only meaningful for the lookup request; it is not a postcode
+ * and must never be written back into the field.
+ *
+ * @param responsePostcode postcode returned by the searchCity lookup
+ * @param requestPostcode  postcode sent with the lookup (may be the '-1' sentinel)
+ * @param countryId        DPD numeric country id (642 = Romania)
+ * @returns {string}       value to write into the postcode field
+ */
+function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId) {
+    const fromResponse = String(responsePostcode ?? '').trim();
+    if (fromResponse !== '') {
+        return fromResponse;
+    }
+
+    // Romania always follows the lookup result, even when it is empty.
+    if (Number(countryId) === 642) {
+        return '';
+    }
+
+    // Other countries keep whatever the customer already had, unless it is the
+    // sentinel - in which case the field is cleared for the new county.
+    const fromRequest = String(requestPostcode ?? '').trim();
+    return fromRequest === '-1' ? '' : fromRequest;
+}
+
 (function ($) {
 
     const checkoutSteps = ['billing', 'shipping'];
@@ -576,11 +607,8 @@ function dpdroLog(enable, type, ...args) {
                         $('body').trigger('update_checkout');
                     } else {
 
-                        if (countryId != 642) {
-                            if (newPc == '') {
-                                newPc = postcode;
-                            }
-                        }
+                        newPc = dpdroResolveFieldPostcode(newPc, postcode, countryId);
+
                         // Blocks checkout needs both DOM update and store update.
                         const selector = getBlocksPostcodeSelectors(step);
                         const $postcodeInputs = jQuery(selector);

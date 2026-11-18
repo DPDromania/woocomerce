@@ -242,118 +242,114 @@ class WooApi
 		return false;
 	}
 
-	/** 
+	/**
 	 * Get tax rate office by service id.
 	 */
 	public function taxRateOffice($serviceId, $package, $pickup)
 	{
-		/** 
+		/**
 		 * Data Lists
 		 */
 		$dataLists = new DataLists($this->wpdb);
 
-		/** 
+		/**
 		 * Office
 		 */
 		$office = $dataLists->getOfficeById($pickup);
 		if ($office && !empty($office->office_site_id)) {
-			$zoneId = $office->office_site_id;
-			$applyOverWeight = 0;
-			$applyOverPrice = (float) WC()->cart->cart_contents_total;
-			$weightUnit = get_option('woocommerce_weight_unit');
-			if ($package['contents'] && is_array($package['contents']) && !empty($package['contents'])) {
-				foreach ($package['contents'] as $item) {
-					$product = $item['data'];
-					$productWeight = $product->get_weight();
-					$productQuantity = $item['quantity'];
-					$productWeight = wc_get_weight($productWeight, 'kg', $weightUnit);
-					for ($i = 0; $i < (int) $productQuantity; $i++) {
-						$applyOverWeight = (float) $applyOverWeight + (float) $productWeight;
+			$hadRows = false;
+			$rate = $this->officeRateForZone($serviceId, $office->office_site_id, $package, $hadRows);
+
+			/**
+			 * Preserve original behavior: only fall back to the default zone when the
+			 * office-specific zone has no configured rows at all.
+			 */
+			if (!$hadRows) {
+				$rate = $this->officeRateForZone($serviceId, '000000001', $package);
+			}
+			return $rate ? $rate : false;
+		}
+
+		/**
+		 * Service 2212 (DPD REGIONAL CEE) is a cross-border service: the selected
+		 * pickup point is a locker / parcelshop in the destination country and is
+		 * not stored in the offices table, so it cannot be resolved above. Fall
+		 * back to the default "All / Rest DPDBox" zone (000000001) so the admin
+		 * rate still applies, for every destination country. The row's own
+		 * calculation_type (Fixed / Percentage) is applied by the caller.
+		 */
+		if (!empty($pickup) && (string) $serviceId === '2212') {
+			return $this->officeRateForZone($serviceId, '000000001', $package);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Best-matching enabled office tax-rate row for a service + zone.
+	 *
+	 * Applies the price/weight tier rules (based_on / apply_over) against the
+	 * current cart and returns the winning row object, or false when none
+	 * qualifies. $hadRows is set (by reference) to whether the zone had ANY
+	 * enabled rows before tier filtering, so the caller can decide whether to
+	 * fall back to the default zone.
+	 */
+	private function officeRateForZone($serviceId, $zoneId, $package, &$hadRows = null)
+	{
+		$applyOverWeight = 0;
+		$applyOverPrice = (float) WC()->cart->cart_contents_total;
+		$weightUnit = get_option('woocommerce_weight_unit');
+		if ($package['contents'] && is_array($package['contents']) && !empty($package['contents'])) {
+			foreach ($package['contents'] as $item) {
+				$product = $item['data'];
+				$productWeight = $product->get_weight();
+				$productQuantity = $item['quantity'];
+				$productWeight = wc_get_weight($productWeight, 'kg', $weightUnit);
+				for ($i = 0; $i < (int) $productQuantity; $i++) {
+					$applyOverWeight = (float) $applyOverWeight + (float) $productWeight;
+				}
+			}
+		}
+
+		$table = $this->wpdb->prefix . 'order_dpd_tax_rates_offices';
+		$rows = $this->wpdb->get_results(
+			"(
+				SELECT * FROM `{$table}`
+				WHERE
+					`service_id` = " . (int) $serviceId . " AND
+					`zone_id` = " . (int) $zoneId . " AND
+					`apply_over` <= " . $applyOverPrice . " AND
+					status = 1
+				ORDER BY `apply_over` DESC
+			) UNION (
+				SELECT * FROM `{$table}`
+				WHERE
+					`service_id` = " . (int) $serviceId . " AND
+					`zone_id` = " . (int) $zoneId . " AND
+					`apply_over` <= " . $applyOverWeight . " AND
+					status = 1
+				ORDER BY `apply_over` DESC
+			)"
+		);
+		$hadRows = !empty($rows);
+
+		$taxRates = array();
+		if (!empty($rows)) {
+			foreach ($rows as $tax) {
+				if ($tax->based_on) {
+					if ((float) $tax->apply_over <= (float) $applyOverPrice) {
+						$taxRates[$tax->apply_over] = $tax;
+					}
+				} else {
+					if ((float) $tax->apply_over <= (float) $applyOverWeight) {
+						$taxRates[$tax->apply_over] = $tax;
 					}
 				}
 			}
-			$query = $this->wpdb->get_results(
-				$this->wpdb->prepare("
-					(
-						SELECT * 
-						FROM `{$this->wpdb->prefix}order_dpd_tax_rates_offices` 
-						WHERE 
-							`service_id` = " . (int) $serviceId . " AND
-							`zone_id` = " . (int) $zoneId . " AND
-							`apply_over` <= " . $applyOverPrice . " AND
-							status = 1
-						ORDER BY `apply_over` DESC
-					) UNION (
-						SELECT * 
-						FROM `{$this->wpdb->prefix}order_dpd_tax_rates_offices`
-						WHERE 
-							`service_id` = " . (int) $serviceId . " AND
-							`zone_id` = " . (int) $zoneId . " AND
-							`apply_over` <= " . $applyOverWeight . " AND
-							status = 1
-						ORDER BY `apply_over` DESC
-					)
-				", array())
-			);
-			$taxRates = array();
-			if (!empty($query)) {
-				foreach ($query as $tax) {
-					if ($tax->based_on) {
-						if ((float) $tax->apply_over <= (float) $applyOverPrice) {
-							$taxRates[$tax->apply_over] = $tax;
-						}
-					} else {
-						if ((float) $tax->apply_over <= (float) $applyOverWeight) {
-							$taxRates[$tax->apply_over] = $tax;
-						}
-					}
-				}
-			} else {
-				$zoneId = '000000001';
-				$query = $this->wpdb->get_results(
-					$this->wpdb->prepare(
-						"
-						(
-							SELECT * 
-							FROM `{$this->wpdb->prefix}order_dpd_tax_rates_offices` 
-							WHERE 
-								`service_id` = " . (int) $serviceId . " AND
-								`zone_id` = " . (int) $zoneId . " AND
-								`apply_over` <= " . $applyOverPrice . " AND
-								status = 1
-							ORDER BY `apply_over` DESC
-						) UNION (
-							SELECT * 
-							FROM `{$this->wpdb->prefix}order_dpd_tax_rates_offices`
-							WHERE 
-								`service_id` = " . (int) $serviceId . " AND
-								`zone_id` = " . (int) $zoneId . " AND
-								`apply_over` <= " . $applyOverWeight . " AND
-								status = 1
-							ORDER BY `apply_over` DESC
-						)
-						",
-						array()
-					)
-				);
-				if (!empty($query)) {
-					foreach ($query as $tax) {
-						if ($tax->based_on) {
-							if ((float) $tax->apply_over <= (float) $applyOverPrice) {
-								$taxRates[$tax->apply_over] = $tax;
-							}
-						} else {
-							if ((float) $tax->apply_over <= (float) $applyOverWeight) {
-								$taxRates[$tax->apply_over] = $tax;
-							}
-						}
-					}
-				}
-			}
-			arsort($taxRates);
-			if (!empty($taxRates)) {
-				return reset($taxRates);
-			}
+		}
+		arsort($taxRates);
+		if (!empty($taxRates)) {
+			return reset($taxRates);
 		}
 		return false;
 	}

@@ -686,6 +686,22 @@ global $wp_version;
                                 </ul>
                             </div>
                         </div>
+                        <hr>
+                        <div class="d-field">
+                            <label for="d-setting-advanced-debug-log"><?php _e('Debug log', 'dpdro'); ?>:</label>
+                            <div class="d-field-list">
+                                <ul>
+                                    <li class="d-checkbox">
+                                        <?php if (isset($dataSettings['debug_log']) && $dataSettings['debug_log'] == '1') : ?>
+                                            <input class="js-d-setting" id="d-setting-advanced-debug-log" type="checkbox" name="debug_log" value="1" checked />
+                                        <?php else : ?>
+                                            <input class="js-d-setting" id="d-setting-advanced-debug-log" type="checkbox" name="debug_log" value="1" />
+                                        <?php endif ?>
+                                        <label for="d-setting-advanced-debug-log"><?php _e('If it is checked, every DPD API request is written to WooCommerce > Status > Logs (source "dpdro"). Credentials are masked, but entries contain customer addresses - enable it only while troubleshooting.', 'dpdro') ?></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <hr>
                     <button data-nonce="<?= $ajaxNonceAdvanceSettings; ?>" class="d-button success alignment js-d-save-advance-settings" type="button">

@@ -7,7 +7,7 @@
  * 		Requires PHP min: 7.0
  * 		Requires Wordpress min: 5.0
  * 		Requires Woocommerce min: 3.9		
- * Version: 3.3.7
+ * Version: 3.3.12
  * Author: DPD-RO
  * Author URI: https://www.dpd.com/ro/ro/
  * Text Domain: dpdro
@@ -17,7 +17,7 @@
  * Requires Woocommerce: 3.9
  */
 
-define('DPDRO_VERSION',  '3.3.7');
+define('DPDRO_VERSION',  '3.3.12');
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -43,8 +43,19 @@ if (!function_exists('dpdRoUpdateChecker')) {
 	function dpdRoUpdateChecker()
 	{
 		$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/DPDromania/woocomerce', __FILE__, 'DPD RO Shipping / Payment');
+
+		/**
+		 * 'master' is intentional even though the repository's branch is 'main':
+		 * for exactly this value PUC v4 serves the latest GitHub Release (then the
+		 * highest tag) instead of the branch head. Publishing a Release whose tag
+		 * matches the "Version:" header above (e.g. v3.3.12) is what ships an
+		 * update. Any other value would turn every push to that branch into an
+		 * immediate update for all shops.
+		 *
+		 * No authentication on purpose: the repository is public, and a token
+		 * embedded in a distributed plugin is readable by anyone who downloads it.
+		 */
 		$myUpdateChecker->setBranch('master');
-		//$myUpdateChecker->se8tAuthentication('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');
 	}
 	dpdRoUpdateChecker();
 }
@@ -76,7 +87,9 @@ if (!function_exists('dpdRoDeactivation')) {
 	{
 		require_once plugin_dir_path(__FILE__) . 'includes/wp/deactivator.php';
 		require_once plugin_dir_path(__FILE__) . 'includes/database.php';
+		require_once plugin_dir_path(__FILE__) . 'library/storage.php';
 		WPDeactivator::deactivate();
+		DpdroStorage::unscheduleCleanup();
 
 		global $wpdb;
 		$Database = new Database($wpdb);
