@@ -247,20 +247,10 @@ function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId)
             });
 
 
-            //classic for address
-            $(document).on('change', '[name="' + step + '_address_1"]', function () {
-                $('[name="' + step + '_pickup"]').val(null).trigger('change');
-                $('.js-dpdro-offices-name').val(dpdRoGeneral.textNoOfficeSelected);
-                $('body').trigger('update_checkout');
-            });
-
-            //blocks for address
-            $(document).on('change', '[id="' + step + '-address_1"]', function () {
-                $('[id="' + step + '-pickup"]').val(-4).trigger('change');
-                $('.js-dpdro-offices-name').val(dpdRoGeneral.textNoOfficeSelected);
-                setBlocksShippingAddress($(this).val(), step);
-               
-            });
+            // The street address (address_1) is the customer's own address and is
+            // independent of the DPD pickup point, so editing it must not drop the
+            // selected locker. (Before 3.3.13 the locker address was written into
+            // address_1, and editing that field meant giving up the locker.)
 
             $('[name="' + step + '_country"]').trigger('change');
             $('[id="' + step + '-country"]').trigger('change');
@@ -324,33 +314,27 @@ function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId)
                     let office = e.data;
                     dpdroLog(LOGS_ENABLED, "event-listener", "inside the event listener");
 
-                    // Checkout steps - update DOM fields
+                    // Store the selected pickup point in the DPD pickup fields only.
+                    // The address fields keep the customer's own address: the AWB and the
+                    // shipping price use the pickup point id, and writing the locker address
+                    // here made it the billing address too (WooCommerce Blocks copies shipping
+                    // into billing when "Use same address for billing" is checked).
                     $.each(checkoutSteps, function (index, step) {
 
-                        $('[name="' + step + '_country"]').val($('[name="' + step + '_country"]').val());
-                        $('[id="' + step + '-country"]').val($('[id="' + step + '-country"]').val());
-                        if (typeof dpd_city_dropdown === 'undefined') {
-                            $('[name="' + step + '_city"]').val(office.address.siteName);
-                            $('[id="' + step + '-city"]').val(office.address.siteName).trigger('change');
-                        }
-                        $('[name="' + step + '_postcode"]').val(office.address.postCode);
-                        //$('[id="' + step + '-postcode"]').val(office.address.postCode);
+                        // Name and type first: changing the pickup id fires a handler that
+                        // reads them and sends them to the server, so they must already hold
+                        // the new pickup point (not empty, not the previous selection's).
+                        $('[name="' + step + '_pickup_name"]').val(office.name);
+                        $('[id="' + step + '-pickup_name"]').val(office.name).trigger('change');
+                        $('[id="' + step + '-dpdro-pickup_name"]').val(office.name).trigger('change');
 
-                        $('[name="' + step + '_address_1"]').val(office.address.fullAddressString);
-                        $('[id="' + step + '-address_1"]').val(office.address.fullAddressString).trigger('change');
-
+                        $('[name="' + step + '_pickup_type"]').val(office.type);
+                        $('[id="' + step + '-pickup_type"]').val(office.type).trigger('change');
+                        $('[id="' + step + '-dpdro-pickup_type"]').val(office.type).trigger('change');
 
                         $('[name="' + step + '_pickup"]').val(office.id);
                         $('[id="' + step + '-pickup"]').val(office.id).trigger('change');
                         $('[id="' + step + '-dpdro-pickup_id"]').val(office.id).trigger('change');
-
-                        $('[name="' + step + '_pickup_name"]').val(office.name);
-                        $('[id="' + step + '-pickup_name"]').val(office.name).trigger('change');
-                        $('[id="' + step + '-dpdro-pickup_name]').val(office.name).trigger('change');
-
-                        $('[name="' + step + '_pickup_type"]').val(office.type);
-                        $('[id="' + step + '-pickup_type"]').val(office.type).trigger('change');
-                        $('[id="' + step + '-dpdro-pickup_type]').val(office.type).trigger('change');
 
                         $('.js-dpdro-offices-name').val(office.name);
                         if (!window.isBlocksCheckout) {
@@ -364,17 +348,13 @@ function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId)
                         dpdroLog(LOGS_ENABLED, "event-listener", '[DPD] Sending DPD office data to server:', {
                             id: office.id,
                             name: office.name,
-                            type: office.type,
-                            address: office.address.fullAddressString,
-                            mirror_to_billing: isBlocksUsingShippingAsBilling() ? 1 : 0
+                            type: office.type
                         });
 
                         dpdroLog(LOGS_ENABLED, "update-session", '[DPD] Sending DPD office data to server:', {
                             id: office.id,
                             name: office.name,
-                            type: office.type,
-                            address: office.address.fullAddressString,
-                            mirror_to_billing: isBlocksUsingShippingAsBilling() ? 1 : 0
+                            type: office.type
                         });
 
                         jQuery.ajax({
@@ -385,49 +365,17 @@ function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId)
                                 nonce: dpdRoGeneral.noneSearchCity,
                                 pickup_id: office.id,
                                 pickup_name: office.name,
-                                pickup_type: office.type,
-                                address: office.address.fullAddressString,
-                                mirror_to_billing: isBlocksUsingShippingAsBilling() ? 1 : 0
+                                pickup_type: office.type
                             },
                             success: function(response) {
                                 dpdroLog(LOGS_ENABLED, "update-session", '[DPD] Session updated via AJAX:', response);
 
-                                var addr = office.address.fullAddressString;
-                                $.each(checkoutSteps, function (index, step) {
-                                    $('[id="' + step + '-address_1"]').val(addr);
-                                });
-
-                                // Persist address_1 via the Store API (cart-token session) BEFORE
-                                // extensionCartUpdate re-fetches the cart. Without this, the cart
-                                // response comes back with the old address_1 (the AJAX save goes to
-                                // the cookie session, not the cart-token session used by Blocks),
-                                // causing WC Blocks to overwrite the store and DOM with the old value.
-                                var updatePromise = Promise.resolve();
-                                if (window.wp && window.wp.data && window.wp.data.dispatch && window.wp.data.select) {
-                                    var cartDispatch = window.wp.data.dispatch('wc/store/cart');
-                                    var cartSelect   = window.wp.data.select('wc/store/cart');
-                                    if (cartDispatch && cartSelect) {
-                                        var customer    = cartSelect.getCustomerData ? (cartSelect.getCustomerData() || {}) : {};
-                                        var shipping    = customer.shippingAddress || {};
-                                        var nextShipping = Object.assign({}, shipping, { address_1: addr });
-                                        if (typeof cartDispatch.setShippingAddress === 'function') {
-                                            cartDispatch.setShippingAddress(nextShipping);
-                                        }
-                                        var p = typeof cartDispatch.updateCustomerData === 'function'
-                                            ? cartDispatch.updateCustomerData({ shippingAddress: nextShipping }, false)
-                                            : null;
-                                        if (p && typeof p.then === 'function') {
-                                            updatePromise = p;
-                                        }
-                                    }
-                                }
-
-                                updatePromise.then(function() {
-                                    const { extensionCartUpdate } = wc.blocksCheckout;
-                                    extensionCartUpdate({
-                                        namespace: 'dpdro',
-                                        data: { recalculate: true }
-                                    });
+                                // Recalculate shipping for the new pickup point. The address is
+                                // left untouched, so there is nothing to persist first.
+                                const { extensionCartUpdate } = wc.blocksCheckout;
+                                extensionCartUpdate({
+                                    namespace: 'dpdro',
+                                    data: { recalculate: true }
                                 });
                             },
                             error: function(error) {
@@ -444,25 +392,6 @@ function dpdroResolveFieldPostcode(responsePostcode, requestPostcode, countryId)
 
     });
 
-    function setBlocksShippingAddress(address1, type) {
-        if (!window.wp?.data?.dispatch) return false;
-
-        const cartDispatch = window.wp.data.dispatch('wc/store/cart');
-
-        if (typeof cartDispatch.setShippingAddress !== 'function') return false;
-
-        if (type=="shipping") {
-            cartDispatch.setShippingAddress({
-                address_1: address1,
-            });
-        } else {
-            cartDispatch.setBillingAddress({
-                address_1: address1,
-            });
-        }
-
-        return true;
-    }
 
     function setBlocksPostalCode(address1, postalCode, type) {
 
