@@ -210,18 +210,10 @@ class WooOrder
                          */
                         $officeId = '';
                         $officeName = '';
-                        $officePickup = get_post_meta($orderId, 'dpdro_pickup', true);
-                        $officePickupName = get_post_meta($orderId, 'dpdro_pickup_name', true);
-                        $officePickupType = get_post_meta($orderId, 'dpdro_pickup_type', true);
-                        if ($officePickup && !empty($officePickup)) {
+                        $checkoutPickup = $this->getCheckoutPickup($order);
+                        if ($checkoutPickup) {
                             $shippingMethod = 'pickup';
-                            $officeData = $lists->getOfficeById($officePickup);
-                            if ($officeData && !empty($officeData)) {
-                                $officeId = $officeData->office_id;
-                                $officeName = $officeData->office_name;
-                            } else {
-	                            $officeId = $officePickup;
-                            }
+                            list($officeId, $officeName) = $this->pickupOffice($checkoutPickup, $lists);
                         }
 
                         /** 
@@ -354,18 +346,14 @@ class WooOrder
                      */
                     $officeId = '';
                     $officeName = '';
-                    $officePickup = get_post_meta($postId, 'dpdro_pickup', true);
-                    $officePickupName = get_post_meta($postId, 'dpdro_pickup_name', true);
-                    $officePickupType = get_post_meta($postId, 'dpdro_pickup_type', true);
-                    if ($officePickup && !empty($officePickup)) {
-                        if ($orderAddress->method && $orderAddress->method == 'pickup') {
+                    $checkoutPickup = $this->getCheckoutPickup($order);
+                    if ($checkoutPickup) {
+                        // A stored record keeps its method; with no stored record
+                        // yet, follow the pickup point chosen at checkout.
+                        if (!is_object($orderAddress) || $orderAddress->method == 'pickup') {
                             $shippingMethod = 'pickup';
                         }
-                        $officeData = $lists->getOfficeById($officePickup);
-                        if ($officeData && !empty($officeData)) {
-                            $officeId = $officeData->office_id;
-                            $officeName = $officeData->office_name;
-                        }
+                        list($officeId, $officeName) = $this->pickupOffice($checkoutPickup, $lists);
                     }
 
                     /** 
@@ -792,6 +780,89 @@ class WooOrder
             return $query;
         }
         return false;
+    }
+
+    /**
+     * DPD office/locker chosen for the order at checkout: ['id' => .., 'name' => ..],
+     * or false when none. Classic checkout and the admin "Change office" save it
+     * as dpdro_pickup post meta; Block checkout saves it as the additional fields
+     * _wc_shipping|billing/dpdro/pickup_* in the order meta.
+     */
+    public function getCheckoutPickup($order)
+    {
+        if (!is_object($order) || !method_exists($order, 'get_meta')) {
+            return false;
+        }
+        $orderId = $order->get_id();
+        $id = get_post_meta($orderId, 'dpdro_pickup', true);
+        if (!empty($id)) {
+            return array(
+                'id'   => (string) $id,
+                'name' => (string) get_post_meta($orderId, 'dpdro_pickup_name', true),
+            );
+        }
+        foreach (array('shipping', 'billing') as $group) {
+            $id = $order->get_meta('_wc_' . $group . '/dpdro/pickup_id');
+            if (!empty($id)) {
+                return array(
+                    'id'   => (string) $id,
+                    'name' => (string) $order->get_meta('_wc_' . $group . '/dpdro/pickup_name'),
+                );
+            }
+        }
+        return false;
+    }
+
+    /**
+     * [office id, office name] to store for a checkout pickup point: taken from
+     * the DPD office list when the office is in it, otherwise as chosen at
+     * checkout (offices outside Romania are not in the list).
+     */
+    private function pickupOffice($checkoutPickup, $lists)
+    {
+        $office = $lists->getOfficeById($checkoutPickup['id']);
+        if ($office && !empty($office)) {
+            return array((string) $office->office_id, (string) $office->office_name);
+        }
+        // The checkout name is customer-supplied: store it as plain text only.
+        return array(sanitize_text_field($checkoutPickup['id']), sanitize_text_field($checkoutPickup['name']));
+    }
+
+    /**
+     * Office/locker the AWB is sent to, or '' for delivery to the address: the
+     * stored DPD address record when its method is pickup, otherwise the pickup
+     * point chosen at checkout.
+     */
+    public function resolvePickupOfficeId($order, $addressData)
+    {
+        if (is_object($addressData) && $addressData->method === 'pickup' && !empty($addressData->office_id)) {
+            return (string) $addressData->office_id;
+        }
+        $checkoutPickup = $this->getCheckoutPickup($order);
+        return $checkoutPickup ? $checkoutPickup['id'] : '';
+    }
+
+    /**
+     * Pickup point shown in the Create shipment modal, ['id' => .., 'name' => ..],
+     * or false when the AWB goes to the address. Follows the same rule as the
+     * AWB, so an order with a locker never asks for address validation, also
+     * when its stored record says "delivery" (Block checkout orders placed
+     * before 3.3.14 were stored that way).
+     */
+    public function getShipmentPickup($order, $addressData, $lists)
+    {
+        $storedPickup = is_object($addressData) && $addressData->method === 'pickup';
+        if ($storedPickup && !empty($addressData->office_id) && !empty($addressData->office_name)) {
+            return array('id' => (string) $addressData->office_id, 'name' => (string) $addressData->office_name);
+        }
+        $id = $this->resolvePickupOfficeId($order, $addressData);
+        if ($id === '') {
+            return $storedPickup ? array('id' => '', 'name' => (string) $addressData->office_name) : false;
+        }
+        $checkoutPickup = $this->getCheckoutPickup($order);
+        $name = ($checkoutPickup && $checkoutPickup['id'] === $id) ? $checkoutPickup['name'] : '';
+        list($id, $name) = $this->pickupOffice(array('id' => $id, 'name' => $name), $lists);
+        return array('id' => $id, 'name' => $name !== '' ? $name : $id);
     }
 
     /** 
@@ -1527,28 +1598,11 @@ class WooOrder
             $addressData = $this->getOrderAddress($params['orderId']);
 
             /**
-             * Resolve a DPD pickup office/locker id from every place it may be
-             * stored, in priority order:
-             *  1) the saved DPD address record (method = pickup),
-             *  2) the legacy post meta (classic checkout / admin saveOffice),
-             *  3) the Block checkout additional fields, which WooCommerce stores
-             *     as _wc_shipping|billing/dpdro/pickup_id (NOT dpdro_pickup).
-             * When any is present the recipient must be the office/locker, with
-             * no street address, and nearest-office auto-select disabled.
+             * DPD pickup office/locker for this order (see resolvePickupOfficeId).
+             * When present the recipient must be the office/locker, with no
+             * street address, and nearest-office auto-select disabled.
              */
-            $resolvedPickupOfficeId = '';
-            if (is_object($addressData) && $addressData->method === 'pickup' && !empty($addressData->office_id)) {
-                $resolvedPickupOfficeId = $addressData->office_id;
-            }
-            if (empty($resolvedPickupOfficeId)) {
-                $resolvedPickupOfficeId = get_post_meta($params['orderId'], 'dpdro_pickup', true);
-            }
-            if (empty($resolvedPickupOfficeId)) {
-                $resolvedPickupOfficeId = $order->get_meta('_wc_shipping/dpdro/pickup_id');
-            }
-            if (empty($resolvedPickupOfficeId)) {
-                $resolvedPickupOfficeId = $order->get_meta('_wc_billing/dpdro/pickup_id');
-            }
+            $resolvedPickupOfficeId = $this->resolvePickupOfficeId($order, $addressData);
 
             if (!empty($resolvedPickupOfficeId)) {
 

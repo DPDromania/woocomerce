@@ -63,6 +63,11 @@ $settings = $dataSettings->getSettings();
 
     <!-- Check if order has DPD RO shipping method. -->
     <?php $dataList = new DataLists($wpdb); ?>
+    <?php
+    // Office/locker delivery needs no address validation: the AWB is sent to the
+    // pickup point, not to the address.
+    $shipmentPickup = $orderAddress ? $wooOrder->getShipmentPickup($order, $orderAddress, $dataList) : false;
+    ?>
     <?php if (!$dataList->getServiceById($orderShippingMethod) && $orderAddress && !empty($orderAddress)) : ?>
         <?php if ($orderShipping && !empty($orderShipping)) : ?>
 
@@ -108,7 +113,7 @@ $settings = $dataSettings->getSettings();
     <div class="d-modal-step d-modal-address">
         <?php if ($checkCountry) : ?>
             <?php if ($orderAddress && !empty($orderAddress)) : ?>
-                <?php if ($orderAddress->method != 'pickup') : ?>
+                <?php if (!$shipmentPickup) : ?>
 
                     <!-- Validation. -->
                     <div class="d-modal-step d-modal-validation">
@@ -165,7 +170,7 @@ $settings = $dataSettings->getSettings();
                     <h5 class="d-pickup">
                         <p>
                             <?php _e('DPD RO order pickup address:', 'dpdro'); ?>
-                            <b><?= $orderAddress->office_name; ?></b>
+                            <b><?= esc_html($shipmentPickup['name']); ?></b>
                         </p>
                         <?php $ajaxNonceChangeOffice = wp_create_nonce('dpdro_change_office'); ?>
                         <button data-nonce="<?= $ajaxNonceChangeOffice; ?>" data-order-id="<?= $order->id; ?>" type="button" class="d-button primary js-d-change-office">
@@ -608,7 +613,7 @@ $settings = $dataSettings->getSettings();
         <input name="id" type="hidden" value="<?= $order->id; ?>">
         <?php if ($checkCountry) : ?>
             <?php if ($orderAddress && !empty($orderAddress)) : ?>
-                <?php if ($orderAddress->method != 'pickup') : ?>
+                <?php if (!$shipmentPickup) : ?>
                     <?php if ($orderAddress->status == 'skip' || $orderAddress->status == 'validated' || 1 == 1) : ?>
                         <button type="button" class="d-button secondary js-d-modal-close">
                             <?php _e('Cancel', 'dpdro'); ?>

@@ -1,3 +1,7 @@
+v3.3.14
+Fixed DPD shipping services not loading on 3.3.12 - 3.3.13: from the day after the update the daily API cache folder could not be created (WordPress refuses folder paths containing "../"), so every DPD API request returned nothing.
+Orders with a DPD locker/office no longer ask for address validation in "Create shipment": the modal shows the pickup point (with "Change office") instead. Block checkout orders are now stored as pickup orders with the locker id and name; orders placed before this version are recognised too.
+
 v3.3.13
 Selecting a DPD locker/office no longer overwrites the address fields with the pickup point address. The address stays the customer's own (so the billing address is correct, also with "Use same address for billing"); the pickup point is kept in the DPD pickup fields and used for the shipping price and the AWB. Editing the street address no longer clears the selected pickup point. Fixed the pickup point name and type being sent to the server empty, or from the previously selected point, when a locker/office was selected.
 

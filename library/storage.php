@@ -82,8 +82,40 @@ class DpdroStorage
 	{
 		$dir = defined('PLUGIN_LOGS_DIR_DPDRO')
 			? PLUGIN_LOGS_DIR_DPDRO
-			: dirname(__DIR__) . '/../../dpdro'; // uninstall.php runs without the plugin loaded
-		return rtrim($dir, '/\\');
+			: dirname(__DIR__, 3) . '/dpdro'; // uninstall.php runs without the plugin loaded
+		// PLUGIN_LOGS_DIR_DPDRO is "<plugin>/../../dpdro". wp_mkdir_p() refuses
+		// any path containing "../", so with it as is the daily cache folders
+		// were never created and every DPD API request returned nothing
+		// (3.3.12 - 3.3.13). Resolve the ".." segments first.
+		return self::normalizePath($dir);
+	}
+
+	/**
+	 * Resolve "." and ".." segments without touching the disk (the folder may
+	 * not exist yet, so realpath() cannot be used).
+	 */
+	public static function normalizePath($path)
+	{
+		$path = str_replace('\\', '/', $path);
+		$prefix = '';
+		if (preg_match('#^([A-Za-z]:)?/#', $path, $m)) {
+			$prefix = $m[0];
+			$path = substr($path, strlen($prefix));
+		}
+		$parts = array();
+		foreach (explode('/', $path) as $part) {
+			if ($part === '' || $part === '.') {
+				continue;
+			}
+			if ($part === '..' && $parts && end($parts) !== '..') {
+				array_pop($parts);
+			} elseif ($part === '..' && $prefix !== '') {
+				continue; // cannot go above the root
+			} else {
+				$parts[] = $part;
+			}
+		}
+		return str_replace('/', DIRECTORY_SEPARATOR, $prefix . implode('/', $parts));
 	}
 
 	/**
@@ -109,7 +141,8 @@ class DpdroStorage
 		if (!is_dir($dir)) {
 			if (function_exists('wp_mkdir_p')) {
 				wp_mkdir_p($dir);
-			} else {
+			}
+			if (!is_dir($dir)) {
 				@mkdir($dir, 0755, true);
 			}
 		}
